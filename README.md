@@ -5,34 +5,34 @@
 ## 公開（GitHub Pages）
 
 - URL: https://itdojp.github.io/small-webapp-software-design-book/
-- 設定: Repo Settings → Pages → Deploy from a branch → `main` / `/ (root)`
+- 設定: Repo Settings → Pages → Deploy from a branch → `main` / `/docs`
 
 ## ローカルプレビュー（Jekyll）
 
 前提: Ruby + Bundler が利用できる環境
 
 - `bundle install`
-- `bundle exec jekyll serve --baseurl ""`
+- `bundle exec jekyll serve --source docs --config docs/_config.yml --baseurl ""`
 - ブラウザで `http://127.0.0.1:4000/` を開く
 
 ## CI（品質ゲート）
 
 - `.github/workflows/ci.yml` で以下を実行します
-  - Jekyll build（`bundle exec jekyll build`）
+  - Jekyll build（`bundle exec jekyll build --source docs --config docs/_config.yml`）
   - Markdown lint（markdownlint）
   - リンクチェック（内部: `scripts/check_internal_links.py` / 外部: lychee）
 
 ## 読み方
 
 - GitHub Pages（公開後）: https://itdojp.github.io/small-webapp-software-design-book/
-- リポジトリ内: `index.md` → `chapters/TOC.md` → 各章 → `appendix/`
+- リポジトリ内: `docs/index.md` → `docs/chapters/TOC.md` → 各章 → `docs/appendix/`
 
 ## ディレクトリ構成（概要）
 
-- `index.md`: トップページ
-- `chapters/`: 章（`TOC.md` を含む）
-- `appendix/`: 付録（チェックリスト、テンプレ、参考文献）
-- `_layouts/`, `_includes/`, `assets/`: GitHub Pages（Jekyll）用
+- `docs/index.md`: トップページ
+- `docs/chapters/`: 章（`TOC.md` を含む）
+- `docs/appendix/`: 付録（チェックリスト、テンプレ、参考文献）
+- `docs/_layouts/`, `docs/_includes/`, `docs/assets/`: GitHub Pages（Jekyll）用
 
 ## コントリビューション
 

@@ -20,7 +20,7 @@ jobs:
           bundler-cache: true
 
       - name: Build site
-        run: bundle exec jekyll build
+        run: bundle exec jekyll build --source docs --config docs/_config.yml --destination _site
 
   markdownlint:
     name: Markdown lint
@@ -58,4 +58,3 @@ jobs:
             --timeout 20
             --max-retries 2
             "**/*.md"
-

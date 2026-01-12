@@ -43,7 +43,7 @@
 ## 5.1 ランニング例（共通題材）
 
 - 章ごとに題材を変えず、同一のランニング例で説明を一貫させる
-- ランニング例は `chapters/00-about-this-book.md` で確定し、以降の章で参照する
+- ランニング例は `docs/chapters/00-about-this-book.md` で確定し、以降の章で参照する
 
 ## 6. Front Matter 規約（章/付録）
 
