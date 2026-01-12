@@ -169,4 +169,3 @@ Appendix B のテンプレを、ランニング例（小規模タスク管理）
 - [目次]({{ '/chapters/' | relative_url }})
 - [前: Appendix B（テンプレ集）]({{ '/appendix/B-templates/' | relative_url }})
 - [次: Appendix C（参考文献・リンク）]({{ '/appendix/C-references/' | relative_url }})
-
