@@ -58,6 +58,7 @@ next: /chapters/04-minimal-architecture-ts/
 
 - 採点表は Appendix B を利用してください
 - [Appendix B: テンプレ集]({{ '/appendix/B-templates/' | relative_url }})
+- 記入例: [Appendix D: 記入例]({{ '/appendix/D-samples/' | relative_url }})
 - 結果から「今すぐ手当する 1 つ」を選び、理由を 3 行で説明してください
 
 ## よくある失敗

@@ -60,6 +60,7 @@ next: /chapters/07-evolution-and-adr/
 3. E2E で守るもの（主要導線のみ）
 
 - [Appendix B: テンプレ集]({{ '/appendix/B-templates/' | relative_url }})
+- 記入例: [Appendix D: 記入例]({{ '/appendix/D-samples/' | relative_url }})
 
 ## よくある失敗
 
