@@ -38,10 +38,11 @@ def parse_front_matter(text: str) -> dict[str, Any]:
 
 
 def collect_pages() -> list[Page]:
+    base_dir = Path("docs")
     candidates = [
-        Path("index.md"),
-        *sorted(Path("chapters").glob("*.md")),
-        *sorted(Path("appendix").glob("*.md")),
+        base_dir / "index.md",
+        *sorted((base_dir / "chapters").glob("*.md")),
+        *sorted((base_dir / "appendix").glob("*.md")),
     ]
     pages: list[Page] = []
     for file_path in candidates:
@@ -130,4 +131,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-
