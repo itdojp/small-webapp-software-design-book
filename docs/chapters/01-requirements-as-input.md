@@ -71,6 +71,7 @@ next: /chapters/02-complexity-and-interaction/
 テンプレは Appendix B を利用してください。
 
 - [Appendix B: テンプレ集]({{ '/appendix/B-templates/' | relative_url }})
+- 記入例: [Appendix D: 記入例]({{ '/appendix/D-samples/' | relative_url }})
 
 ## よくある失敗
 

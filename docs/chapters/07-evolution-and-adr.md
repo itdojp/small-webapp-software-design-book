@@ -54,6 +54,7 @@ next: /appendix/A-checklists/
 ランニング例で ADR を 1 本作成してください（Appendix B のテンプレ利用）。
 
 - [Appendix B: テンプレ集]({{ '/appendix/B-templates/' | relative_url }})
+  - 記入例: [Appendix D: 記入例]({{ '/appendix/D-samples/' | relative_url }})
 
 例（題材）:
 

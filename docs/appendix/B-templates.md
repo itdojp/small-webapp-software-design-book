@@ -3,12 +3,16 @@ title: "Appendix B: テンプレ集"
 permalink: /appendix/B-templates/
 show_nav: true
 prev: /appendix/A-checklists/
-next: /appendix/C-references/
+next: /appendix/D-samples/
 ---
 
 # Appendix B: テンプレ集
 
 本書で扱う判断・合意を「再利用可能な形式」にするためのテンプレートです。必要に応じてチーム向けに最小改変して使ってください。
+
+記入例（完成形）が必要な場合は Appendix D を参照してください。
+
+- [Appendix D: 記入例（ランニング例の完成形）]({{ '/appendix/D-samples/' | relative_url }})
 
 ## B-1. S/D/V 採点表（依存関係トップ 10）
 
@@ -166,4 +170,4 @@ next: /appendix/C-references/
 
 - [目次]({{ '/chapters/' | relative_url }})
 - [前: Appendix A（チェックリスト）]({{ '/appendix/A-checklists/' | relative_url }})
-- [次: Appendix C（参考文献・リンク）]({{ '/appendix/C-references/' | relative_url }})
+- [次: Appendix D（記入例）]({{ '/appendix/D-samples/' | relative_url }})

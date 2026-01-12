@@ -24,4 +24,5 @@ permalink: /chapters/
 
 - [Appendix A: チェックリスト]({{ '/appendix/A-checklists/' | relative_url }})
 - [Appendix B: テンプレ集]({{ '/appendix/B-templates/' | relative_url }})
+- [Appendix D: 記入例（ランニング例の完成形）]({{ '/appendix/D-samples/' | relative_url }})
 - [Appendix C: 参考文献・リンク]({{ '/appendix/C-references/' | relative_url }})
