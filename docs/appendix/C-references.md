@@ -2,7 +2,7 @@
 title: "Appendix C: 参考文献・リンク"
 permalink: /appendix/C-references/
 show_nav: true
-prev: /appendix/D-samples/
+prev: /appendix/E-glossary/
 next: /chapters/
 ---
 
@@ -66,4 +66,4 @@ next: /chapters/
 ## 前後リンク
 
 - [目次]({{ '/chapters/' | relative_url }})
-- [前: Appendix D（記入例）]({{ '/appendix/D-samples/' | relative_url }})
+- [前: Appendix E（用語集）]({{ '/appendix/E-glossary/' | relative_url }})
