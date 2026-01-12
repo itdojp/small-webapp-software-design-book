@@ -1,0 +1,39 @@
+{% assign toc_url = '/chapters/' %}
+{% assign prev_url = page.prev %}
+{% assign next_url = page.next %}
+
+{% assign prev_page = nil %}
+{% if prev_url %}
+  {% assign prev_page = site.pages | where: "url", prev_url | first %}
+{% endif %}
+
+{% assign next_page = nil %}
+{% if next_url %}
+  {% assign next_page = site.pages | where: "url", next_url | first %}
+{% endif %}
+
+<nav class="page-nav" aria-label="ページナビゲーション">
+  <a class="page-nav__toc" href="{{ toc_url | relative_url }}">目次</a>
+
+  {% if prev_url %}
+    <a class="page-nav__prev" href="{{ prev_url | relative_url }}" rel="prev">
+      ← 前へ
+      {% if prev_page and prev_page.title %}
+        <span class="page-nav__title">{{ prev_page.title | escape }}</span>
+      {% endif %}
+    </a>
+  {% else %}
+    <span class="page-nav__prev is-disabled">← 前へ</span>
+  {% endif %}
+
+  {% if next_url %}
+    <a class="page-nav__next" href="{{ next_url | relative_url }}" rel="next">
+      次へ →
+      {% if next_page and next_page.title %}
+        <span class="page-nav__title">{{ next_page.title | escape }}</span>
+      {% endif %}
+    </a>
+  {% else %}
+    <span class="page-nav__next is-disabled">次へ →</span>
+  {% endif %}
+</nav>

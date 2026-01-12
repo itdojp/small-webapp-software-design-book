@@ -1,0 +1,35 @@
+# Site metadata
+title: "要件から始めるソフトウェア設計（小規模TS Webアプリの実践）"
+description: "小〜中規模の TypeScript Web アプリを対象に、要件定義→設計→テストまでを一貫して学ぶ実践教材"
+author: "株式会社アイティードゥ"
+version: "0.1.0"
+lang: "ja"
+
+# GitHub Pages settings (Project Pages)
+url: "https://itdojp.github.io"
+baseurl: "/small-webapp-software-design-book"
+repository: "itdojp/small-webapp-software-design-book"
+
+# Jekyll settings
+markdown: kramdown
+highlighter: rouge
+permalink: pretty
+
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+
+defaults:
+  - scope:
+      path: ""
+      type: "pages"
+    values:
+      layout: "default"
+
+exclude:
+  - node_modules/
+  - vendor/
+  - Gemfile
+  - Gemfile.lock
+  - package.json
+  - package-lock.json

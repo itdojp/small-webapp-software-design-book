@@ -1,0 +1,10 @@
+<div class="footer-inner">
+  <p class="footer-meta">© {{ "now" | date: "%Y" }} {{ site.author | escape }}</p>
+  <p class="footer-meta">
+    ライセンス: <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a>
+    {% if site.repository %}
+      / <a href="https://github.com/{{ site.repository }}/blob/main/LICENSE.md" target="_blank" rel="noopener">LICENSE.md</a>
+    {% endif %}
+    / 問い合わせ: <a href="mailto:knowledge@itdo.jp">knowledge@itdo.jp</a>
+  </p>
+</div>
