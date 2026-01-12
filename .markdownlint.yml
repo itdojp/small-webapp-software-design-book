@@ -1,0 +1,8 @@
+# 最低限のルールのみを適用する（執筆の阻害を避ける）
+
+default: true
+
+MD013: false # 行長は運用で吸収
+MD033: false # インラインHTMLを許容（Jekyll用リンク等）
+MD041: false # 先頭見出しは front matter 前提で無効化
+

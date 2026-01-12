@@ -1,0 +1,61 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    name: Jekyll build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.1"
+          bundler-cache: true
+
+      - name: Build site
+        run: bundle exec jekyll build
+
+  markdownlint:
+    name: Markdown lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Lint (markdownlint-cli2)
+        uses: DavidAnson/markdownlint-cli2-action@v19
+        with:
+          config: .markdownlint.yml
+          globs: |
+            **/*.md
+
+  link-check:
+    name: Link check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Internal links (permalink/nav)
+        run: python3 scripts/check_internal_links.py
+
+      - name: External links (lychee)
+        uses: lycheeverse/lychee-action@v1.10.0
+        with:
+          args: >
+            --verbose
+            --no-progress
+            --exclude-mail
+            --exclude "\\{\\{"
+            --exclude "^file:"
+            --timeout 20
+            --max-retries 2
+            "**/*.md"
+
