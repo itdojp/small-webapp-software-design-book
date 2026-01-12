@@ -40,6 +40,62 @@ next: /chapters/06-test-strategy-pyramid/
 - **壊れにくさ**: 非決定性（時刻/乱数/外部I/O）によりフレークしないか
 - **フィードバック速度**: 実行時間と診断容易性が適切か（失敗時に原因が追えるか）
 
+## 統合テストの境界（本書の定義）
+
+本書では「統合テスト」を、`domain/usecases` と `adapters` の境界を跨ぐ契約を検証するテストとして扱います（章 04 の最小アーキテクチャ前提）。
+
+- 単体テストで無理に扱わない（統合で扱う）典型:
+  - DB 永続化（スキーマ/クエリ/トランザクション）
+  - HTTP 入出力（ルーティング、入力検証、エラー形式）
+  - 認可（ロール/所有者ルールと API の接続）
+  - 外部通知 I/F（失敗/遅延/リトライの扱い）
+- 小規模での線引き（現実解）:
+  - DB は「実物」を使い、repository adapter 経由で検証する
+  - ネットワーク越しの外部サービスは、統合テストでは直接叩かず、adapter の契約をテストダブルで固定する（フレーク源になりやすい）
+
+## モック/スタブ方針（境界に寄せる）
+
+モック/スタブは「依存を制御する」ための手段であり、設計上の境界を表します。本書の基本方針は次の通りです。
+
+- `domain`: 原則としてテストダブル不要（純粋関数に寄せる）
+  - 時刻/乱数などはグローバル参照せず、引数で受ける（例: `now: Date`）
+- `usecases`: port（依存先インターフェース）を引数で受け、スタブ/フェイクで差し替える
+  - 「呼ばれたこと」を見る必要がある場合は、最小のスパイ（呼び出し記録）に留める
+  - 呼び出し順序や内部の回数など、契約でない要素をテストに含めない（変更耐性を落とす）
+- `adapters`: I/O を含むため、統合テストで契約を検証する
+  - 外部 I/F は adapter の入力/出力と失敗時の扱いを固定する（例: タイムアウト時は再送キューに積む）
+
+この方針で「モック地獄」を避けやすくなります。モックが増え続ける場合は、境界が薄い/責務が混ざっているサインとして扱ってください。
+
+## 依存注入（依存を引数で受ける）
+
+小規模 TS では、DI コンテナを導入する前に「依存を引数で受ける」だけで十分なことが多いです。
+
+例: ユースケースが port を引数で受ける（疑似コード）
+
+```ts
+export type AssignTaskDeps = {
+  now: () => Date;
+  saveAssignment: (input: {
+    taskId: string;
+    assigneeId: string;
+    assignedAt: Date;
+  }) => Promise<void>;
+  notifyAssigned: (input: { taskId: string; assigneeId: string }) => Promise<void>;
+};
+
+export async function assignTask(
+  deps: AssignTaskDeps,
+  input: { taskId: string; assigneeId: string }
+): Promise<void> {
+  const assignedAt = deps.now();
+  await deps.saveAssignment({ ...input, assignedAt });
+  await deps.notifyAssigned(input);
+}
+```
+
+テストでは `now/saveAssignment/notifyAssigned` をテストダブルに差し替え、外部 I/O を含まずに「期待する振る舞い」を検証できます。統合テストでは `saveAssignment` を実 DB に向け、`notifyAssigned` は adapter の契約として別途検証します。
+
 ## 例（ランニング例）
 
 タスク管理では、次の分離がそのままテスト方針になります。
@@ -103,6 +159,11 @@ describe("calcDueStatus", () => {
 1. 純粋（単体で厚く守る）: 入力→出力で検証できるもの
 2. I/O（統合/E2E）: DB/HTTP/メールなど外部に依存するもの
 
+分類結果をもとに、Appendix B の「受け入れ条件テンプレ」のうち **テスト観点** を 5〜10 行で埋めてください。
+
+- [Appendix B: テンプレ集（B-3. 受け入れ条件テンプレ）]({{ '/appendix/B-templates/' | relative_url }})
+- 記入例: [Appendix D: 記入例]({{ '/appendix/D-samples/' | relative_url }})
+
 例（選択肢）:
 
 - タスク作成
@@ -118,8 +179,10 @@ describe("calcDueStatus", () => {
 ## チェックリスト
 
 - [ ] 単体テスト対象（コア）と統合テスト対象（境界）が分けられている
+- [ ] 統合テストの境界（DB/HTTP/認可/外部通知など）が列挙されている
 - [ ] 例外系の振る舞いが要件・受け入れ条件と整合している
 - [ ] モック/スタブの利用理由が説明できる（依存の制御）
+- [ ] port（依存先）を引数で受けられる設計になっている（DI）
 - [ ] テストが実装詳細ではなく振る舞い（契約）を検証している
 - [ ] 非決定性（時刻、乱数、外部I/O）を制御できている
 
