@@ -10,15 +10,33 @@ next: /chapters/
 
 本文には転載しません。参照する場合は、リンク先の利用条件や著作権に従ってください。
 
+## 禁止事項（再掲）
+
+- 外部書籍・ガイドの本文転載
+- 参照書籍の PDF、購入物、配布資料等のコミット
+
 ## 書籍
 
 - 『ソフトウェア設計の結合バランス』
 - 『単体テストの考え方/使い方』
 - 『ユーザのための要件定義ガイド 第2版』
 
-## 関連リンク（追加予定）
+## テスト/ツール（公式）
 
-- Issue/PR で必要に応じて追記します
+- Vitest: https://vitest.dev/
+- Jest: https://jestjs.io/
+- Playwright: https://playwright.dev/
+- MSW（Mock Service Worker）: https://mswjs.io/
+
+## GitHub Pages / Jekyll（公式）
+
+- GitHub Pages: https://docs.github.com/pages
+- Jekyll: https://jekyllrb.com/
+- GitHub Pages と Jekyll の基本: https://docs.github.com/pages/setting-up-a-github-pages-site-with-jekyll
+
+## 関連リンク（追加）
+
+- 本リポジトリの方針: `POLICY.md`
 
 ## 前後リンク
 

@@ -13,6 +13,12 @@ next: /chapters/05-design-for-testability/
 - 小規模で有効な「最小の境界」を定義し、設計・テストに接続する
 - Functional core / thin shell の考え方で、変更容易性と実装速度を両立する
 
+## 得られる判断能力
+
+- 小規模で必要十分な境界（責務分離）を定義できる
+- 「コア（純粋ロジック）」と「シェル（I/O）」の分割方針を説明できる
+- 依存の向きを固定し、テスト戦略（単体/統合）に接続できる
+
 ## 前提/用語
 
 - **Functional core**: 副作用のないロジック（入力→出力が決まる）
@@ -25,12 +31,37 @@ next: /chapters/05-design-for-testability/
 - 状態は必要最小限にし、コアに押し込めない（コアは状態に依存しない）
 - 境界はテスト方針（どこを単体で守るか）とセットで決める
 
+## 例（ランニング例）
+
+タスク管理を「最小の境界」で扱う場合、以下の 3 つに分けるだけでも効果が出ます。
+
+- `domain/`: 期限判定、状態遷移、バリデーションなど（副作用なし）
+- `usecases/`: ユースケース（登録/割り当て/完了）をオーケストレーション（依存は引数で受ける）
+- `adapters/`: HTTP/DB/メール等の I/O
+
+例: 状態遷移の domain 関数（純粋）
+
+```ts
+export type TaskStatus = "todo" | "in_progress" | "done";
+
+export function canTransition(from: TaskStatus, to: TaskStatus): boolean {
+  const allowed: Record<TaskStatus, TaskStatus[]> = {
+    todo: ["in_progress"],
+    in_progress: ["done"],
+    done: [],
+  };
+  return allowed[from].includes(to);
+}
+```
+
+この関数は I/O に依存しないため、単体テストで薄く守れます（次章以降で扱います）。
+
 ## 演習（最小1個）
 
-対象システムの機能を 5〜10 個に分解し、次を満たす簡易図を作ってください。
+ランニング例の “最小フォルダ構成” を設計し、責務を書き出してください。
 
-- コア（純粋ロジック）とシェル（I/O、UI、API）を分ける
-- 境界を跨ぐデータ構造（DTO/型）を 2 つ定義する
+- `domain / usecases / adapters` の 3 区分で開始する
+- 境界を跨ぐデータ構造（DTO/型）を 2 つ定義する（例: `CreateTaskInput`, `AssignedTask`）
 
 ## よくある失敗
 

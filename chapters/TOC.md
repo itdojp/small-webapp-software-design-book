@@ -7,6 +7,8 @@ permalink: /chapters/
 
 推奨読了順: `00 → 01 → 02 → 03 → 04 → 05 → 06 → 07 → Appendix`
 
+共通題材（ランニング例）: 小規模「タスク管理」+ 期限/権限/通知
+
 ## 本編
 
 - [00. この本の使い方]({{ '/chapters/00-about-this-book/' | relative_url }})
