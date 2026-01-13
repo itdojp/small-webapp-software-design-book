@@ -33,6 +33,7 @@ next: /chapters/02-complexity-and-interaction/
 - To-Be は「画面」ではなく「業務/体験の状態」を文章化する（5W2H が有効）
 - 非機能は全量を網羅しない。**最小合意**として、意思決定に必要な項目だけを先に固定する
 - 要件の粒度は、設計の粒度（境界）とテストの粒度（自動化範囲）に直結する
+- 主要要件は「どの仕様/設計/テストで担保するか」を残すと漏れが減る（任意: [Appendix B（B-11）]({{ '/appendix/B-templates/' | relative_url }}) / 記入例: [Appendix D（D-19）]({{ '/appendix/D-samples/' | relative_url }})）
 
 ## 例（ランニング例）
 
@@ -137,6 +138,7 @@ next: /chapters/02-complexity-and-interaction/
 - [ ] To-Be と As-Is の差分（ギャップ）が説明できる
 - [ ] 非機能の最小合意（例: SLA/SLO、ログ、監査）が定義されている
 - [ ] 「重要な例外系」が列挙されている
+- [ ] 主要要件が、仕様/設計/テストのどこで担保されるか追跡できる（任意）
 
 ## 前後リンク
 
