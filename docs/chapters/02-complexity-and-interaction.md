@@ -43,6 +43,11 @@ next: /chapters/03-coupling-balance-sdv/
 
 この結果を、章 03 の S/D/V 採点と、章 05-06 のテスト配分へ接続します。
 
+成果物として残す場合:
+
+- 相互作用マップ（任意）: [Appendix B: テンプレ集（B-9）]({{ '/appendix/B-templates/' | relative_url }})
+- 記入例: [Appendix D: 記入例（D-17）]({{ '/appendix/D-samples/' | relative_url }})
+
 ## 例（ランニング例）
 
 タスク管理で相互作用が出やすい典型例です。
