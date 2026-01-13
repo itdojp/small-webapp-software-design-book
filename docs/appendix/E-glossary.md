@@ -8,14 +8,18 @@ next: /appendix/C-references/
 
 # Appendix E: 用語集
 
-本書で繰り返し登場する用語を、最小の定義として整理します。厳密な学術定義ではなく、本書の判断（要件→設計→テスト）を揃えるための用語集です。
+本書で繰り返し登場する用語を、最小の定義として整理します。厳密な学術定義ではなく、本書の判断（要求→要件→仕様→設計→テスト）を揃えるための用語集です。
 
 ## E-1. 要件/合意
 
-- **要求**: 利害関係者が「したいこと」。未整理で矛盾を含み得る
+- **要求（Needs / Goals）**: なぜやるか（ビジネス目的・課題・KPI）。未整理で矛盾を含み得るため、目的と測定（KPI）に落とす
   - 関連: [01. 要件定義を設計入力にする]({{ '/chapters/01-requirements-as-input/' | relative_url }})
-- **要件**: 合意され、検証可能な形に落とした要求（受け入れ条件を含む）
+- **要件（Requirements / Shall）**: 何を満たすべきか（実装方法に依存しない約束）。「〜できること」「〜しなければならない」を列挙する
   - 関連: [01. 要件定義を設計入力にする]({{ '/chapters/01-requirements-as-input/' | relative_url }})
+- **仕様（Specification / Behavior）**: どう振る舞うか（外部から観測できる振る舞いを曖昧さなく）。入力/出力、状態遷移、エラー形式などを定義する
+  - 関連: [Appendix B: テンプレ集]({{ '/appendix/B-templates/' | relative_url }})
+- **設計（Design / Structure）**: どう作るか（内部構造・モジュール・アルゴリズム・DB物理など）。仕様を満たすための構造を決める
+  - 関連: [04. 小規模TS向けの最小アーキテクチャ]({{ '/chapters/04-minimal-architecture-ts/' | relative_url }})
 - **受け入れ条件**: 検証可能な合否基準（Given/When/Then など）
   - 関連: [Appendix B: テンプレ集]({{ '/appendix/B-templates/' | relative_url }})
 - **非機能（NFR）**: 性能、可用性、セキュリティ、運用性などの制約条件
