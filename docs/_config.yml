@@ -24,7 +24,19 @@ defaults:
       path: ""
       type: "pages"
     values:
-      layout: "default"
+      layout: "book"
+
+# Plugins (GitHub Pages whitelist)
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-seo-tag
+  - jekyll-relative-links
+  - jekyll-optional-front-matter
+
+# GitHub Pages settings
+github:
+  is_project_page: true
 
 exclude:
   - node_modules/
