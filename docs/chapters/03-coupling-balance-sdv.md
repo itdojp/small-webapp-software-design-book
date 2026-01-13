@@ -107,8 +107,8 @@ S/D/V は「分けるべき/まとめるべき」の二択を出す道具では�
 
 「依存関係トップ 10」を列挙し、S/D/V を半定量で採点してください。
 
-- 採点表は Appendix B を利用してください
-- [Appendix B: テンプレ集]({{ '/appendix/B-templates/' | relative_url }})
+- 採点表は Appendix B-4 を利用してください
+- [Appendix B: テンプレ集（B-4. S/D/V 採点表）]({{ '/appendix/B-templates/' | relative_url }})
 - 記入例: [Appendix D: 記入例]({{ '/appendix/D-samples/' | relative_url }})
 - 結果から「今すぐ手当する 1 つ」を選び、以下を 3〜5 行で説明してください
   - 何が悪いか（S/D/V のどこが効いているか）

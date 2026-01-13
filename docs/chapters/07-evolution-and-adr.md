@@ -53,7 +53,7 @@ next: /appendix/A-checklists/
 
 進化条件は「気分」になりやすいため、Appendix B の Change Drivers テンプレで観測と根拠を先に揃えると再現性が上がります。
 
-- [Appendix B: テンプレ集（B-5. Change Drivers）]({{ '/appendix/B-templates/' | relative_url }})
+- [Appendix B: テンプレ集（B-6. Change Drivers）]({{ '/appendix/B-templates/' | relative_url }})
 - 記入例: [Appendix D: 記入例]({{ '/appendix/D-samples/' | relative_url }})
 
 ## トリガー別の最小手当（境界/契約/テスト/運用）
@@ -102,7 +102,7 @@ ADR は「後から取り返しがつきにくい」決定に絞ると運用し�
   - 実装詳細の選択（ライブラリ差し替え等）で、後から容易に戻せる
   - 影響範囲が狭く、障害時の復旧が単純
 
-ADR を書く前に、Change Drivers（Appendix B-5）で「なぜ今変えるか」を整理しておくと、Context が短くなり議論が収束しやすくなります。
+ADR を書く前に、Change Drivers（Appendix B-6）で「なぜ今変えるか」を整理しておくと、Context が短くなり議論が収束しやすくなります。
 
 ## 演習（最小1個）
 
@@ -112,8 +112,8 @@ ADR を書く前に、Change Drivers（Appendix B-5）で「なぜ今変える�
 2. ADR（何を決めたか）
 
 - [Appendix B: テンプレ集]({{ '/appendix/B-templates/' | relative_url }})
-  - Change Drivers: B-5
-  - ADR: B-2
+  - Change Drivers: B-6
+  - ADR: B-7
   - 記入例: [Appendix D: 記入例]({{ '/appendix/D-samples/' | relative_url }})
 
 例（題材）:

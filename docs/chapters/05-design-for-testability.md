@@ -159,9 +159,9 @@ describe("calcDueStatus", () => {
 1. 純粋（単体で厚く守る）: 入力→出力で検証できるもの
 2. I/O（統合/E2E）: DB/HTTP/メールなど外部に依存するもの
 
-分類結果をもとに、Appendix B の「受け入れ条件テンプレ」のうち **テスト観点** を 5〜10 行で埋めてください。
+分類結果をもとに、Appendix B の「仕様（Behavior）テンプレ（B-3）」のうち **テスト観点** を 5〜10 行で埋めてください。
 
-- [Appendix B: テンプレ集（B-3. 受け入れ条件テンプレ）]({{ '/appendix/B-templates/' | relative_url }})
+- [Appendix B: テンプレ集（B-3. 仕様テンプレ）]({{ '/appendix/B-templates/' | relative_url }})
 - 記入例: [Appendix D: 記入例]({{ '/appendix/D-samples/' | relative_url }})
 
 例（選択肢）:
