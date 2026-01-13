@@ -97,6 +97,11 @@ export type UsecaseError =
 
 この「code」の集合が、仕様（Behavior）とテストの契約になります。
 
+成果物として残す場合:
+
+- エラーコードカタログ（任意）: [Appendix B: テンプレ集（B-10）]({{ '/appendix/B-templates/' | relative_url }})
+- 記入例: [Appendix D: 記入例（D-18）]({{ '/appendix/D-samples/' | relative_url }})
+
 ### 依存方向のルール（禁止事項で固定する）
 
 小規模では「層」を増やすより、禁止事項を明文化して逸脱を検知できる状態にするほうが有効です。
