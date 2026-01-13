@@ -22,6 +22,8 @@ next: /appendix/C-references/
   - 関連: [04. 小規模TS向けの最小アーキテクチャ]({{ '/chapters/04-minimal-architecture-ts/' | relative_url }})
 - **受け入れ条件**: 検証可能な合否基準（Given/When/Then など）
   - 関連: [Appendix B: テンプレ集]({{ '/appendix/B-templates/' | relative_url }})
+- **観測点**: 合否判定のために「何を見ればよいか」を固定したポイント（画面表示、APIレスポンス、ログ、イベント等）
+  - 関連: [Appendix B: テンプレ集]({{ '/appendix/B-templates/' | relative_url }})
 - **非機能（NFR）**: 性能、可用性、セキュリティ、運用性などの制約条件
   - 関連: [01. 要件定義を設計入力にする]({{ '/chapters/01-requirements-as-input/' | relative_url }})
 - **価値導線**: ユーザー価値を成立させる主要な利用フロー（止まると損失が大きい導線）
@@ -35,6 +37,8 @@ next: /appendix/C-references/
   - 関連: [04. 小規模TS向けの最小アーキテクチャ]({{ '/chapters/04-minimal-architecture-ts/' | relative_url }})
 - **契約**: 境界を跨ぐ入出力・失敗時の扱い・互換性などの合意（文書/型/テストで固定する）
   - 関連: [05. 設計時にテストを織り込む]({{ '/chapters/05-design-for-testability/' | relative_url }})
+- **冪等性（Idempotency）**: 同じ操作を繰り返しても、結果が重複しない性質（例: 二重送信でデータや通知が増殖しない）
+  - 関連: [01. 要件定義を設計入力にする]({{ '/chapters/01-requirements-as-input/' | relative_url }})
 - **S/D/V**: 結合を扱うための物差し（統合強度 / 距離 / 変動性）
   - 関連: [03. 結合の物差し（S/D/V）]({{ '/chapters/03-coupling-balance-sdv/' | relative_url }})
 - **Functional core / Thin shell**: 副作用のないコアと、I/O を担うシェルの分離方針
@@ -65,6 +69,8 @@ next: /appendix/C-references/
   - 関連: [Appendix B: テンプレ集]({{ '/appendix/B-templates/' | relative_url }})
 - **観測性**: 期待する結果が、テスト・ログ・メトリクス等で確実に検証できる性質
   - 関連: [05. 設計時にテストを織り込む]({{ '/chapters/05-design-for-testability/' | relative_url }})
+- **相関ID（Correlation ID）**: 複数のログ/イベントを同一の処理として関連付ける識別子（障害解析・監査に用いる）
+  - 関連: [07. 進化条件（ADRと境界の強化タイミング）]({{ '/chapters/07-evolution-and-adr/' | relative_url }})
 
 ## 前後リンク
 
