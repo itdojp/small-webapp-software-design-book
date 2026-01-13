@@ -56,6 +56,56 @@ export function canTransition(from: TaskStatus, to: TaskStatus): boolean {
 
 この関数は I/O に依存しないため、単体テストで薄く守れます（次章以降で扱います）。
 
+### 境界を跨ぐ型（DTO）の最小ルール
+
+小規模でも、境界を跨ぐデータ（DTO）を先に決めると、UI/API/DB の相互作用が増えにくくなります。
+
+- domain の型（エンティティ/値）は、外部I/F（HTTP/DB）の都合に引きずられない
+- adapters で扱う入出力（JSON/SQL）は、usecases の DTO に変換して渡す
+- UI は「usecases が返す DTO」だけを前提にし、domain の内部構造を前提にしない
+
+例（割り当てユースケースの DTO）:
+
+```ts
+export type AssignTaskInput = { taskId: string; assigneeId: string };
+export type AssignTaskOutput = {
+  taskId: string;
+  assigneeId: string;
+  assignedAt: string; // 例: ISO 8601
+};
+```
+
+DTO に「観測できる結果」だけを載せると、後から内部構造を変えても UI/API が壊れにくくなります。
+
+### エラーの扱い（境界で整形する）
+
+例外やエラーは、domain/usecases 内で「理由」を保持し、外部へ出す境界（例: HTTP）で形式を揃えます。
+
+- domain: ルール違反（権限、状態遷移、制約）を「理由付き」で返す
+- usecases: domain の理由を、外部I/Fの失敗（通知失敗等）と区別して扱う
+- adapters: 失敗理由をステータスコード/エラー形式に写像し、クライアントへ返す
+
+例（エラーをコード化する最小形式）:
+
+```ts
+export type UsecaseError =
+  | { code: "forbidden"; message: string }
+  | { code: "not_found"; message: string }
+  | { code: "conflict"; message: string }
+  | { code: "invalid"; message: string };
+```
+
+この「code」の集合が、仕様（Behavior）とテストの契約になります。
+
+### 依存方向のルール（禁止事項で固定する）
+
+小規模では「層」を増やすより、禁止事項を明文化して逸脱を検知できる状態にするほうが有効です。
+
+- domain は adapters を import しない（HTTP/DB/外部通知/環境変数に依存しない）
+- usecases は具体実装（DB クライアント等）に依存しない（port を引数で受ける）
+- adapters は domain/usecases を呼ぶが、その逆はしない（依存を逆流させない）
+- UI は domain を直接参照しない（usecases の DTO とエラー形式を契約にする）
+
 ## 演習（最小1個）
 
 ランニング例の “最小フォルダ構成” を設計し、責務を書き出してください。
@@ -73,6 +123,7 @@ export function canTransition(from: TaskStatus, to: TaskStatus): boolean {
 
 - [ ] コアがフレームワークや I/O に依存していない
 - [ ] 境界を跨ぐ型/契約が明確
+- [ ] エラー理由が境界で整形され、仕様とテストで検証できる
 - [ ] UI の状態管理が増殖しない設計になっている
 
 ## 前後リンク
