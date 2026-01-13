@@ -1,31 +1,31 @@
 chapters:
-  - title: 目次
+  - title: "目次"
     path: /chapters/
-  - title: 00. この本の使い方
+  - title: "00. この本の使い方"
     path: /chapters/00-about-this-book/
-  - title: 01. 要件定義を設計入力にする
+  - title: "01. 要件定義を設計入力にする"
     path: /chapters/01-requirements-as-input/
-  - title: 02. 複雑性の捉え方
+  - title: "02. 複雑性の捉え方"
     path: /chapters/02-complexity-and-interaction/
-  - title: 03. 結合の物差し（統合強度×距離×変動性）
+  - title: "03. 結合の物差し（統合強度×距離×変動性）"
     path: /chapters/03-coupling-balance-sdv/
-  - title: 04. 小規模TS向けの最小アーキテクチャ
+  - title: "04. 小規模TS向けの最小アーキテクチャ"
     path: /chapters/04-minimal-architecture-ts/
-  - title: 05. 設計時にテストを織り込む
+  - title: "05. 設計時にテストを織り込む"
     path: /chapters/05-design-for-testability/
-  - title: 06. テスト戦略（単体/統合/E2E）
+  - title: "06. テスト戦略（単体/統合/E2E）"
     path: /chapters/06-test-strategy-pyramid/
-  - title: 07. 進化条件（ADRと境界の強化タイミング）
+  - title: "07. 進化条件（ADRと境界の強化タイミング）"
     path: /chapters/07-evolution-and-adr/
 
 appendices:
-  - title: Appendix A: チェックリスト
+  - title: "Appendix A: チェックリスト"
     path: /appendix/A-checklists/
-  - title: Appendix B: テンプレ集
+  - title: "Appendix B: テンプレ集"
     path: /appendix/B-templates/
-  - title: Appendix D: 記入例（ランニング例の完成形）
+  - title: "Appendix D: 記入例（ランニング例の完成形）"
     path: /appendix/D-samples/
-  - title: Appendix E: 用語集
+  - title: "Appendix E: 用語集"
     path: /appendix/E-glossary/
-  - title: Appendix C: 参考文献・リンク
+  - title: "Appendix C: 参考文献・リンク"
     path: /appendix/C-references/
