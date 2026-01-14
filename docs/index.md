@@ -49,16 +49,20 @@ permalink: /
 
 ### 本編
 
+<ul>
 {% for item in nav.chapters %}
 {% unless item.path == '/chapters/' %}
-- [{{ item.title }}]({{ item.path | relative_url }})
+  <li><a href="{{ item.path | relative_url }}">{{ item.title }}</a></li>
 {% endunless %}
 {% endfor %}
+</ul>
 
 ### Appendix
 
+<ul>
 {% for item in nav.appendices %}
-- [{{ item.title }}]({{ item.path | relative_url }})
+  <li><a href="{{ item.path | relative_url }}">{{ item.title }}</a></li>
 {% endfor %}
+</ul>
 
 補足: 一覧ページとして [目次]({{ '/chapters/' | relative_url }}) も用意しています。
