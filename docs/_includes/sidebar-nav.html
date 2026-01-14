@@ -4,6 +4,8 @@
     <p class="book-subtitle">{{ site.description | escape }}</p>
   </div>
 
+  {% assign nav = site.data.navigation %}
+
   <div class="toc">
     <h3 class="toc-title">目次</h3>
 
@@ -21,77 +23,62 @@
     <div class="toc-section">
       <h3 class="toc-section-title">本編</h3>
       <ul class="toc-list">
-        <li class="toc-item toc-chapter">
-          <a href="{{ '/chapters/00-about-this-book/' | relative_url }}" class="toc-link {% if page.url == '/chapters/00-about-this-book/' %}active{% endif %}">
-            <span class="chapter-number">00.</span>この本の使い方
-          </a>
-        </li>
-        <li class="toc-item toc-chapter">
-          <a href="{{ '/chapters/01-requirements-as-input/' | relative_url }}" class="toc-link {% if page.url == '/chapters/01-requirements-as-input/' %}active{% endif %}">
-            <span class="chapter-number">01.</span>要件定義を設計入力にする
-          </a>
-        </li>
-        <li class="toc-item toc-chapter">
-          <a href="{{ '/chapters/02-complexity-and-interaction/' | relative_url }}" class="toc-link {% if page.url == '/chapters/02-complexity-and-interaction/' %}active{% endif %}">
-            <span class="chapter-number">02.</span>複雑性の捉え方
-          </a>
-        </li>
-        <li class="toc-item toc-chapter">
-          <a href="{{ '/chapters/03-coupling-balance-sdv/' | relative_url }}" class="toc-link {% if page.url == '/chapters/03-coupling-balance-sdv/' %}active{% endif %}">
-            <span class="chapter-number">03.</span>結合の物差し（S/D/V）
-          </a>
-        </li>
-        <li class="toc-item toc-chapter">
-          <a href="{{ '/chapters/04-minimal-architecture-ts/' | relative_url }}" class="toc-link {% if page.url == '/chapters/04-minimal-architecture-ts/' %}active{% endif %}">
-            <span class="chapter-number">04.</span>小規模TS向けの最小アーキテクチャ
-          </a>
-        </li>
-        <li class="toc-item toc-chapter">
-          <a href="{{ '/chapters/05-design-for-testability/' | relative_url }}" class="toc-link {% if page.url == '/chapters/05-design-for-testability/' %}active{% endif %}">
-            <span class="chapter-number">05.</span>設計時にテストを織り込む
-          </a>
-        </li>
-        <li class="toc-item toc-chapter">
-          <a href="{{ '/chapters/06-test-strategy-pyramid/' | relative_url }}" class="toc-link {% if page.url == '/chapters/06-test-strategy-pyramid/' %}active{% endif %}">
-            <span class="chapter-number">06.</span>テスト戦略（単体/統合/E2E）
-          </a>
-        </li>
-        <li class="toc-item toc-chapter">
-          <a href="{{ '/chapters/07-evolution-and-adr/' | relative_url }}" class="toc-link {% if page.url == '/chapters/07-evolution-and-adr/' %}active{% endif %}">
-            <span class="chapter-number">07.</span>進化条件（ADRと境界）
-          </a>
-        </li>
+        {% for item in nav.chapters %}
+          {% if item.path and item.path != '/chapters/' %}
+            {% assign chapter_title = item.title | default: '' %}
+            {% assign chapter_number = '' %}
+            {% assign chapter_label = chapter_title %}
+            {% if chapter_title contains '. ' %}
+              {% assign parts = chapter_title | split: '. ' %}
+              {% if parts.size >= 2 %}
+                {% assign chapter_number = parts[0] | strip %}
+                {% assign chapter_label = parts[1] | strip %}
+              {% endif %}
+            {% endif %}
+
+            <li class="toc-item toc-chapter">
+              <a href="{{ item.path | relative_url }}" class="toc-link {% if page.url == item.path %}active{% endif %}">
+                {% if chapter_number != '' %}
+                  <span class="chapter-number">{{ chapter_number }}.</span>{{ chapter_label }}
+                {% else %}
+                  {{ chapter_title }}
+                {% endif %}
+              </a>
+            </li>
+          {% endif %}
+        {% endfor %}
       </ul>
     </div>
 
     <div class="toc-section">
       <h3 class="toc-section-title">Appendix</h3>
       <ul class="toc-list">
-        <li class="toc-item toc-chapter">
-          <a href="{{ '/appendix/A-checklists/' | relative_url }}" class="toc-link {% if page.url == '/appendix/A-checklists/' %}active{% endif %}">
-            <span class="chapter-number">A.</span>チェックリスト
-          </a>
-        </li>
-        <li class="toc-item toc-chapter">
-          <a href="{{ '/appendix/B-templates/' | relative_url }}" class="toc-link {% if page.url == '/appendix/B-templates/' %}active{% endif %}">
-            <span class="chapter-number">B.</span>テンプレ集
-          </a>
-        </li>
-        <li class="toc-item toc-chapter">
-          <a href="{{ '/appendix/D-samples/' | relative_url }}" class="toc-link {% if page.url == '/appendix/D-samples/' %}active{% endif %}">
-            <span class="chapter-number">D.</span>記入例
-          </a>
-        </li>
-        <li class="toc-item toc-chapter">
-          <a href="{{ '/appendix/E-glossary/' | relative_url }}" class="toc-link {% if page.url == '/appendix/E-glossary/' %}active{% endif %}">
-            <span class="chapter-number">E.</span>用語集
-          </a>
-        </li>
-        <li class="toc-item toc-chapter">
-          <a href="{{ '/appendix/C-references/' | relative_url }}" class="toc-link {% if page.url == '/appendix/C-references/' %}active{% endif %}">
-            <span class="chapter-number">C.</span>参考文献・リンク
-          </a>
-        </li>
+        {% for item in nav.appendices %}
+          {% if item.path %}
+            {% assign appendix_title = item.title | default: '' %}
+            {% assign appendix_number = '' %}
+            {% assign appendix_label = appendix_title %}
+
+            {% if appendix_title contains 'Appendix ' %}
+              {% assign after = appendix_title | remove_first: 'Appendix ' %}
+              {% assign parts = after | split: ': ' %}
+              {% if parts.size >= 2 %}
+                {% assign appendix_number = parts[0] | strip %}
+                {% assign appendix_label = parts[1] | strip %}
+              {% endif %}
+            {% endif %}
+
+            <li class="toc-item toc-chapter">
+              <a href="{{ item.path | relative_url }}" class="toc-link {% if page.url == item.path %}active{% endif %}">
+                {% if appendix_number != '' %}
+                  <span class="chapter-number">{{ appendix_number }}.</span>{{ appendix_label }}
+                {% else %}
+                  {{ appendix_title }}
+                {% endif %}
+              </a>
+            </li>
+          {% endif %}
+        {% endfor %}
       </ul>
     </div>
   </div>
