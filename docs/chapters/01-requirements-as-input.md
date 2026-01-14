@@ -34,6 +34,7 @@ next: /chapters/02-complexity-and-interaction/
 - 非機能は全量を網羅しない。**最小合意**として、意思決定に必要な項目だけを先に固定する
 - 要件の粒度は、設計の粒度（境界）とテストの粒度（自動化範囲）に直結する
 - 主要要件は「どの仕様/設計/テストで担保するか」を残すと漏れが減る（任意: [Appendix B（B-11）]({{ '/appendix/B-templates/' | relative_url }}) / 記入例: [Appendix D（D-19）]({{ '/appendix/D-samples/' | relative_url }})）
+- 受け入れ条件（Given/When/Then）に ID を振ると、レビュー/テストの会話コストが下がる（任意: [Appendix B（B-12）]({{ '/appendix/B-templates/' | relative_url }}) / 記入例: [Appendix D（D-20）]({{ '/appendix/D-samples/' | relative_url }})）
 
 ## 例（ランニング例）
 
@@ -139,6 +140,7 @@ next: /chapters/02-complexity-and-interaction/
 - [ ] 非機能の最小合意（例: SLA/SLO、ログ、監査）が定義されている
 - [ ] 「重要な例外系」が列挙されている
 - [ ] 主要要件が、仕様/設計/テストのどこで担保されるか追跡できる（任意）
+- [ ] 主要導線の受け入れ条件に ID が付与されている（任意）
 
 ## 前後リンク
 
