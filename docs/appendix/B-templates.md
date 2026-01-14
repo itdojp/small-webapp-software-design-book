@@ -24,7 +24,7 @@ next: /appendix/D-samples/
 | --- | --- | --- | --- |
 | 要求 | なぜやるか（目的・課題・KPI） | Needs/Goals の整理 | B-1 |
 | 要件 | 何を満たすべきか（Shall） | Requirements 一覧、スコープ、非機能の最小合意 | B-2 |
-| 仕様 | どう振る舞うか（外部観測） | 受け入れ条件、例外系、エラー、外部I/Fの振る舞い | B-3（任意: B-10, B-12, B-13） |
+| 仕様 | どう振る舞うか（外部観測） | 受け入れ条件、例外系、エラー、外部I/Fの振る舞い | B-3（任意: B-10, B-12, B-13, B-14） |
 | 設計 | どう作るか（内部構造） | S/D/V、設計アウトライン、Change Drivers、ADR | B-4〜B-7（任意: B-9/B-10） |
 | テスト | どこをどう守るか | テスト配分（単体/統合/E2E） | B-8 |
 | 横断 | 漏れ/矛盾を早期に見つける | 要件→仕様→設計→テストの対応 | B-11（任意） |
@@ -434,6 +434,71 @@ next: /appendix/D-samples/
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | AUTHZ-1 | assign_task | task | admin のみ | forbidden/403 | actor/taskId/code/相関ID | 統合/単体 | |
 | AUTHZ-2 | update_status | task | assignee のみ | forbidden/403 | actor/taskId/code/相関ID | 統合/単体 | 状態遷移ルールは別途 |
+```
+
+## B-14. API 契約テンプレ（HTTP/エラー/冪等性）（任意）
+
+目的: HTTP API の入出力・エラー・冪等性を「契約」として固定し、UI/API/テスト（統合）の相互作用を減らす。B-10（エラーcode）/B-12（AC-ID）/B-13（認可）に接続する。
+
+運用方針（最小）:
+
+- 「成功の形」と同じくらい「失敗の形（code/HTTP）」を固定する（曖昧なまま実装しない）
+- 冪等性（二重送信）と同時更新（競合）の扱いを契約に含める（フレーク・運用負債の主要因）
+- 互換性を崩す変更（破壊的変更）は、移行計画とセットで扱う（ADR を残す）
+
+```md
+# API 契約: <対象（例: タスク割り当て API）>
+
+## 関連（要求/要件/受け入れ条件）
+
+- 要件ID: (例) R-1, R-2
+- AC ID: (例) AC-1, AC-2
+
+## エンドポイント
+
+- method/path: `POST /api/...`
+- operationId（任意）:
+- 認証/認可: (例) admin のみ（B-13参照）
+
+## Request
+
+- headers:
+  - (任意) `Idempotency-Key`:
+- params:
+  - `taskId`:
+- body（例）:
+  - `assigneeId`:
+
+## Response（Success）
+
+- status: `200` / `201` / `204`
+- body（例）:
+  - `taskId`:
+  - `assigneeId`:
+  - `assignedAt`:
+
+## Response（Error）
+
+最小形式（例）:
+
+- `{ "code": "<reason>", "message": "<user-facing>" }`
+
+| code | HTTP | 条件（いつ起きるか） | 再試行可否 | 備考 |
+| --- | --- | --- | --- | --- |
+| forbidden | 403 | 認可失敗 | No | B-13 |
+| not_found | 404 | 対象なし | No | |
+| invalid | 400 | 入力不正 | No | |
+| conflict | 409 | 競合/状態不整合 | Yes/No | 同時更新方針を固定 |
+
+## 冪等性（二重送信）/同時更新（競合）
+
+- 冪等性の方針:
+- 同時更新の方針（例: 楽観ロックで `409`）:
+
+## ログ/監査（最小）
+
+- 監査/ログに含める項目（相関ID、actor、対象ID、code）:
+- 個人情報はログに出さない:
 ```
 
 ## 前後リンク
