@@ -60,23 +60,28 @@
     "appendices": [
       {
         "id": "appendix-a",
-        "title": "Appendix A: チェックリスト"
+        "title": "Appendix A: チェックリスト",
+        "description": "要求→要件→仕様→設計→テストを作業漏れなく進めるための最小チェックリスト"
       },
       {
         "id": "appendix-b",
-        "title": "Appendix B: テンプレ集"
-      },
-      {
-        "id": "appendix-c",
-        "title": "Appendix C: 参考文献・リンク"
+        "title": "Appendix B: テンプレ集",
+        "description": "要求/要件/仕様/設計/テストの判断・合意を再利用可能な形式にするテンプレート集"
       },
       {
         "id": "appendix-d",
-        "title": "Appendix D: 記入例（ランニング例の完成形）"
+        "title": "Appendix D: 記入例（ランニング例の完成形）",
+        "description": "Appendix B のテンプレをランニング例に記入した完成形の例"
       },
       {
         "id": "appendix-e",
-        "title": "Appendix E: 用語集"
+        "title": "Appendix E: 用語集",
+        "description": "本書で用いる用語（要求/要件/仕様/設計ほか）の最小定義"
+      },
+      {
+        "id": "appendix-c",
+        "title": "Appendix C: 参考文献・リンク",
+        "description": "参照情報（一次情報/公式）へのリンク集（本文転載はしない）"
       }
     ]
   },
