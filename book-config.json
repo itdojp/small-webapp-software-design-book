@@ -1,0 +1,90 @@
+{
+  "title": "要件から始めるソフトウェア設計（小規模TS Webアプリの実践）",
+  "description": "小〜中規模の TypeScript Web アプリを対象に、要件定義→設計→テストまでを一貫して学ぶ実践教材",
+  "author": "株式会社アイティードゥ",
+  "version": "0.1.0",
+  "language": "ja",
+  "license": "CC BY-NC-SA 4.0",
+  "repository": {
+    "url": "https://github.com/itdojp/small-webapp-software-design-book.git",
+    "branch": "main"
+  },
+  "structure": {
+    "chapters": [
+      {
+        "id": "toc",
+        "title": "目次",
+        "description": "本書の章構成と推奨読了順"
+      },
+      {
+        "id": "chapter00",
+        "title": "00. この本の使い方",
+        "description": "本書の適用範囲・非ゴール・判断原則を整理する"
+      },
+      {
+        "id": "chapter01",
+        "title": "01. 要件定義を設計入力にする",
+        "description": "要求を合意された要件へ変換し、設計入力として扱う"
+      },
+      {
+        "id": "chapter02",
+        "title": "02. 複雑性の捉え方",
+        "description": "相互作用と複雑性の観点で設計の難所を言語化する"
+      },
+      {
+        "id": "chapter03",
+        "title": "03. 結合の物差し（統合強度×距離×変動性）",
+        "description": "結合（知識の共有）をS/D/Vで評価し、弱め方を選ぶ"
+      },
+      {
+        "id": "chapter04",
+        "title": "04. 小規模TS向けの最小アーキテクチャ",
+        "description": "小規模前提で必要十分なアーキテクチャを設計する"
+      },
+      {
+        "id": "chapter05",
+        "title": "05. 設計時にテストを織り込む",
+        "description": "テスト容易性を設計判断として組み込む"
+      },
+      {
+        "id": "chapter06",
+        "title": "06. テスト戦略（単体/統合/E2E）",
+        "description": "変更容易性と価値導線を守るテスト配分を決める"
+      },
+      {
+        "id": "chapter07",
+        "title": "07. 進化条件（ADRと境界の強化タイミング）",
+        "description": "進化条件を言語化し、設計を継続改善できる形にする"
+      }
+    ],
+    "appendices": [
+      {
+        "id": "appendix-a",
+        "title": "Appendix A: チェックリスト"
+      },
+      {
+        "id": "appendix-b",
+        "title": "Appendix B: テンプレ集"
+      },
+      {
+        "id": "appendix-c",
+        "title": "Appendix C: 参考文献・リンク"
+      },
+      {
+        "id": "appendix-d",
+        "title": "Appendix D: 記入例（ランニング例の完成形）"
+      },
+      {
+        "id": "appendix-e",
+        "title": "Appendix E: 用語集"
+      }
+    ]
+  },
+  "build": {
+    "outputDirectory": "docs",
+    "framework": "book-formatter",
+    "enableNavigation": true,
+    "enableSyntaxHighlighting": true,
+    "enableMobileOptimization": true
+  }
+}
