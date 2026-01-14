@@ -29,6 +29,7 @@
 
 ## ディレクトリ構成（概要）
 
+- `book-config.json`: シリーズ横展開/機械処理向けのメタデータ（book-formatter 用）
 - `docs/index.md`: トップページ
 - `docs/chapters/`: 章（`TOC.md` を含む）
 - `docs/appendix/`: 付録（チェックリスト、テンプレ、参考文献）

@@ -43,6 +43,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Validate book-config.json
+        run: python3 -c "import json; json.load(open('book-config.json', 'r', encoding='utf-8')); print('book-config.json OK')"
+
       - name: Internal links (permalink/nav)
         run: python3 scripts/check_internal_links.py
 
