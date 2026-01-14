@@ -45,6 +45,7 @@ Appendix B のテンプレを、ランニング例（小規模タスク管理）
 | B-10 | D-18 | 失敗理由（code）を契約として固定する |
 | B-11 | D-19 | 要件→仕様→設計→テストの対応を最小で維持する |
 | B-12 | D-20 | 受け入れ条件（AC）をID化し、会話コストを下げる |
+| B-13 | D-21 | 認可ルールを表形式で合意し、仕様/テストの前提を揃える |
 
 ## D-1. 要求（Needs / Goals）の記入例（B-1）
 
@@ -654,6 +655,20 @@ Appendix B のテンプレを、ランニング例（小規模タスク管理）
 | AC-5 | DUE-1, DUE-2 | `dueAt=2026-01-10`（JST） | `now=2026-01-09` で一覧を表示 | `due_soon` として表示される | - | 単体/統合 | 判定ロジックは domain に集約 |
 | AC-6 | DUE-1, DUE-2 | `dueAt=2026-01-10`（JST） | `now=2026-01-11` で一覧を表示 | `overdue` として表示される | - | 単体/統合 | |
 | AC-7 | DUE-3〜DUE-5 | 期限超過タスクが存在する | 検知（例: 定期ジョブ）が実行される | 通知が実行され、結果が追跡できる | - | 統合 | 重複通知は DUE-4 で抑止 |
+
+## D-21. 認可（Authorization）ルール表（記入例）（B-13）
+
+前提（例）:
+
+- 役割: `admin` / `user`
+- 属性: タスクには `assigneeId` があり、担当者は `assigneeId == actorId`
+- 失敗時の振る舞い: 認可失敗は `forbidden/403`（`not_found` と混同しない）
+
+| 操作ID | 操作（Action） | 対象（Resource） | 許可条件（Role/属性） | 失敗時（code/HTTP） | 監査/ログ | 推奨テスト | 備考 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| AUTHZ-1 | assign_task | task | `admin` のみ | forbidden/403 | actor/taskId/code/相関ID | 統合/単体 | UI の表示制御に依存しない |
+| AUTHZ-2 | update_status | task | `assigneeId == actorId` | forbidden/403 | actor/taskId/code/相関ID | 統合/単体 | 状態遷移ルールは D-3/D-12 を参照 |
+| AUTHZ-3 | view_task | task | `admin` または `assigneeId == actorId` | forbidden/403 | actor/taskId/code/相関ID | 統合 | 一覧/詳細の両方に適用 |
 
 ## 前後リンク
 
