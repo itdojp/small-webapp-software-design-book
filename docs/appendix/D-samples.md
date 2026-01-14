@@ -46,6 +46,7 @@ Appendix B のテンプレを、ランニング例（小規模タスク管理）
 | B-11 | D-19 | 要件→仕様→設計→テストの対応を最小で維持する |
 | B-12 | D-20 | 受け入れ条件（AC）をID化し、会話コストを下げる |
 | B-13 | D-21 | 認可ルールを表形式で合意し、仕様/テストの前提を揃える |
+| B-14 | D-22 | API の入出力・エラー・冪等性を契約として固定する |
 
 ## D-1. 要求（Needs / Goals）の記入例（B-1）
 
@@ -669,6 +670,64 @@ Appendix B のテンプレを、ランニング例（小規模タスク管理）
 | AUTHZ-1 | assign_task | task | `admin` のみ | forbidden/403 | actor/taskId/code/相関ID | 統合/単体 | UI の表示制御に依存しない |
 | AUTHZ-2 | update_status | task | `assigneeId == actorId` | forbidden/403 | actor/taskId/code/相関ID | 統合/単体 | 状態遷移ルールは D-3/D-12 を参照 |
 | AUTHZ-3 | view_task | task | `admin` または `assigneeId == actorId` | forbidden/403 | actor/taskId/code/相関ID | 統合 | 一覧/詳細の両方に適用 |
+
+## D-22. API 契約（記入例）（B-14）
+
+対象: ケース1（割り当て API: `POST /api/tasks/{taskId}/assignment`）
+
+### 関連（要求/要件/受け入れ条件）
+
+- 要件ID: R-1, R-2, R-4, R-5, R-7
+- AC ID: AC-1, AC-2, AC-3, AC-4
+- 認可ルール（参照）: D-21（AUTHZ-1）
+
+### エンドポイント
+
+- method/path: `POST /api/tasks/{taskId}/assignment`
+- 認証/認可: 認証必須、認可は `admin` のみ
+
+### Request
+
+- headers（任意）:
+  - `Idempotency-Key`: 二重送信対策（クライアントが送れる場合）
+- params:
+  - `taskId`（path）: 割り当て対象タスクID
+- body:
+  - `assigneeId`（必須）: 割り当て先のユーザーID
+
+### Response（Success）
+
+- status: `200`
+- body（例）:
+  - `taskId`: `"task-123"`
+  - `assigneeId`: `"user-123"`
+  - `assignedAt`: `"2026-01-10T12:34:56Z"`（例: ISO 8601）
+
+### Response（Error）
+
+最小形式（例）:
+
+- `{ "code": "<reason>", "message": "<user-facing>" }`
+
+| code | HTTP | 条件（いつ起きるか） | 再試行可否 | 備考 |
+| --- | --- | --- | --- | --- |
+| forbidden | 403 | 認可失敗（admin 以外） | No | D-18 |
+| not_found | 404 | `taskId` が存在しない | No | D-18 |
+| invalid | 400 | `assigneeId` の形式不正等 | No | D-18 |
+| conflict | 409 | 同時更新/状態ルール違反 | Yes/No | D-18 |
+
+### 冪等性（二重送信）/同時更新（競合）
+
+- 冪等性の方針（例）:
+  - `Idempotency-Key` が同一なら、同一結果（同一レスポンス）に収束させる
+  - `Idempotency-Key` が無い場合でも、同一 `taskId` に同一 `assigneeId` の再割り当ては no-op とし、通知や監査ログが増殖しない（R-5 の運用負債を抑制）
+- 同時更新の方針（例）:
+  - 競合時は `conflict/409` を返す（後勝ちにする場合も、方針を曖昧にしない）
+
+### ログ/監査（最小）
+
+- 監査/ログ: actor、taskId、assigneeId、code（失敗時）、相関ID
+- 個人情報はログに出さない（ID と code を中心にする）
 
 ## 前後リンク
 

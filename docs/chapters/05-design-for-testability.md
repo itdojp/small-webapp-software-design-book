@@ -52,6 +52,7 @@ next: /chapters/06-test-strategy-pyramid/
 - 小規模での線引き（現実解）:
   - DB は「実物」を使い、repository adapter 経由で検証する
   - ネットワーク越しの外部サービスは、統合テストでは直接叩かず、adapter の契約をテストダブルで固定する（フレーク源になりやすい）
+  - HTTP 入出力（入出力/エラー/冪等性）は API 契約として残すと、期待値（契約）が揃いやすい（任意: [Appendix B（B-14）]({{ '/appendix/B-templates/' | relative_url }}) / 記入例: [Appendix D（D-22）]({{ '/appendix/D-samples/' | relative_url }})）
 
 ## モック/スタブ方針（境界に寄せる）
 

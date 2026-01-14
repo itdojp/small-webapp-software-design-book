@@ -101,6 +101,8 @@ export type UsecaseError =
 
 - エラーコードカタログ（任意）: [Appendix B: テンプレ集（B-10）]({{ '/appendix/B-templates/' | relative_url }})
 - 記入例: [Appendix D: 記入例（D-18）]({{ '/appendix/D-samples/' | relative_url }})
+- API 契約（任意）: [Appendix B: テンプレ集（B-14）]({{ '/appendix/B-templates/' | relative_url }})
+- 記入例: [Appendix D: 記入例（D-22）]({{ '/appendix/D-samples/' | relative_url }})
 
 ### 依存方向のルール（禁止事項で固定する）
 
