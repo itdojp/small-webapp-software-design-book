@@ -119,6 +119,7 @@ next: /appendix/A-checklists/
 補助テンプレ:
 
 - Change Drivers / ADR: [Appendix B: テンプレ集]({{ '/appendix/B-templates/' | relative_url }})（B-6/B-7）
+- 外部I/F失敗時設計: [Appendix B: テンプレ集]({{ '/appendix/B-templates/' | relative_url }})（B-16） / 記入例: [Appendix D: 記入例]({{ '/appendix/D-samples/' | relative_url }})（D-24）
 
 ## 例（ランニング例）
 
