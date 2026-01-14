@@ -32,3 +32,13 @@
 - 「判断基準（S/D/V、テスト戦略、非機能の最小合意）」を中心に据える
 - フレームワーク固有の実装最適化は原則扱わない（必要なら別 Issue で合意）
 - コード例は短くし、境界・依存・型が伝わることを優先する
+
+## book-config.json（シリーズ横展開用メタデータ）
+
+`book-config.json` は、シリーズ書籍の横展開・機械処理（book-formatter）で利用するメタデータです。
+
+- 章/付録の追加・並び替えを行う場合は、以下を同期してください
+  - `docs/_data/navigation.yml`（前後ナビの順序）
+  - `docs/_includes/sidebar-nav.html`（サイドバーの章/付録表示）
+  - `book-config.json`（`structure.chapters` / `structure.appendices`）
+- タイトル/説明/著者/バージョンを変更する場合は、`docs/_config.yml` と `book-config.json` の整合も確認してください
