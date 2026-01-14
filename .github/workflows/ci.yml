@@ -46,6 +46,9 @@ jobs:
       - name: Validate book-config.json
         run: python3 -c "import json; json.load(open('book-config.json', 'r', encoding='utf-8')); print('book-config.json OK')"
 
+      - name: Validate book-config.json <-> navigation.yml
+        run: python3 scripts/check_book_config_navigation_consistency.py
+
       - name: Internal links (permalink/nav)
         run: python3 scripts/check_internal_links.py
 
