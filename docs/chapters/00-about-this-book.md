@@ -153,8 +153,3 @@ next: /chapters/01-requirements-as-input/
 - [ ] 非ゴールを合意できる（少なくともチーム内）
 - [ ] 受け入れ条件の粒度イメージを共有できる
 - [ ] S/D/V の定義をチームで共有できる
-
-## 前後リンク
-
-- [目次]({{ '/chapters/' | relative_url }})
-- [次章: 01. 要件定義を設計入力にする]({{ '/chapters/01-requirements-as-input/' | relative_url }})

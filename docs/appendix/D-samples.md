@@ -838,9 +838,3 @@ Appendix B のテンプレを、ランニング例（小規模タスク管理）
 - 統合:
   - 通知 I/F が失敗しても割り当ては成功し、outbox に再送起点が残る
   - `dedupeKey` により二重送信が増殖しない（再実行/再試行に耐える）
-
-## 前後リンク
-
-- [目次]({{ '/chapters/' | relative_url }})
-- [前: Appendix B（テンプレ集）]({{ '/appendix/B-templates/' | relative_url }})
-- [次: Appendix E（用語集）]({{ '/appendix/E-glossary/' | relative_url }})

@@ -151,9 +151,3 @@ S/D/V は「分けるべき/まとめるべき」の二択を出す道具では�
 - [ ] S/D/V を使って説明できる（感想ではなく観測）
 - [ ] 「分ける/まとめる」の判断が、運用・テスト方針に接続している
 - [ ] 採点の根拠（観測）が短文で残っている
-
-## 前後リンク
-
-- [目次]({{ '/chapters/' | relative_url }})
-- [前章: 02. 複雑性の捉え方]({{ '/chapters/02-complexity-and-interaction/' | relative_url }})
-- [次章: 04. 小規模TS向けの最小アーキテクチャ]({{ '/chapters/04-minimal-architecture-ts/' | relative_url }})

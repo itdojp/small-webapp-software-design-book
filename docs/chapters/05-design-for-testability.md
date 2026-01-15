@@ -208,9 +208,3 @@ describe("calcDueStatus", () => {
 - [ ] port（依存先）を引数で受けられる設計になっている（DI）
 - [ ] テストが実装詳細ではなく振る舞い（契約）を検証している
 - [ ] 非決定性（時刻、乱数、外部I/O）を制御できている
-
-## 前後リンク
-
-- [目次]({{ '/chapters/' | relative_url }})
-- [前章: 04. 小規模TS向けの最小アーキテクチャ]({{ '/chapters/04-minimal-architecture-ts/' | relative_url }})
-- [次章: 06. テスト戦略（単体/統合/E2E）]({{ '/chapters/06-test-strategy-pyramid/' | relative_url }})

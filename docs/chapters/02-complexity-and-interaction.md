@@ -100,9 +100,3 @@ next: /chapters/03-coupling-balance-sdv/
 - [ ] 変更が波及する箇所（UI/API/DB/運用）を具体的に列挙できる
 - [ ] 相互作用を減らすための「制約」を言語化できる
 - [ ] 影響範囲の大きい領域に、テスト投資を寄せる方針がある
-
-## 前後リンク
-
-- [目次]({{ '/chapters/' | relative_url }})
-- [前章: 01. 要件定義を設計入力にする]({{ '/chapters/01-requirements-as-input/' | relative_url }})
-- [次章: 03. 結合の物差し（S/D/V）]({{ '/chapters/03-coupling-balance-sdv/' | relative_url }})

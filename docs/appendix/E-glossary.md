@@ -71,9 +71,3 @@ next: /appendix/C-references/
   - 関連: [05. 設計時にテストを織り込む]({{ '/chapters/05-design-for-testability/' | relative_url }})
 - **相関ID（Correlation ID）**: 複数のログ/イベントを同一の処理として関連付ける識別子（障害解析・監査に用いる）
   - 関連: [07. 進化条件（ADRと境界の強化タイミング）]({{ '/chapters/07-evolution-and-adr/' | relative_url }})
-
-## 前後リンク
-
-- [目次]({{ '/chapters/' | relative_url }})
-- [前: Appendix D（記入例）]({{ '/appendix/D-samples/' | relative_url }})
-- [次: Appendix C（参考文献・リンク）]({{ '/appendix/C-references/' | relative_url }})
