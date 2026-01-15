@@ -134,9 +134,3 @@ export type UsecaseError =
 - [ ] 境界を跨ぐ型/契約が明確
 - [ ] エラー理由が境界で整形され、仕様とテストで検証できる
 - [ ] UI の状態管理が増殖しない設計になっている
-
-## 前後リンク
-
-- [目次]({{ '/chapters/' | relative_url }})
-- [前章: 03. 結合の物差し（S/D/V）]({{ '/chapters/03-coupling-balance-sdv/' | relative_url }})
-- [次章: 05. 設計時にテストを織り込む]({{ '/chapters/05-design-for-testability/' | relative_url }})

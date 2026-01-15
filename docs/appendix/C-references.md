@@ -62,8 +62,3 @@ next: /chapters/
 ## 関連リンク（追加）
 
 - 本リポジトリの方針: `POLICY.md`
-
-## 前後リンク
-
-- [目次]({{ '/chapters/' | relative_url }})
-- [前: Appendix E（用語集）]({{ '/appendix/E-glossary/' | relative_url }})

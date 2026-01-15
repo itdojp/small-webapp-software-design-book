@@ -618,9 +618,3 @@ next: /appendix/D-samples/
 - 単体: 再試行可否の判定（失敗分類）を純粋関数で守る
 - 統合: 失敗時に「再送起点」が記録され、アラート条件を満たすと検知できる
 ```
-
-## 前後リンク
-
-- [目次]({{ '/chapters/' | relative_url }})
-- [前: Appendix A（チェックリスト）]({{ '/appendix/A-checklists/' | relative_url }})
-- [次: Appendix D（記入例）]({{ '/appendix/D-samples/' | relative_url }})

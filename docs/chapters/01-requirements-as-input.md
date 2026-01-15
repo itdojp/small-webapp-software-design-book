@@ -141,9 +141,3 @@ next: /chapters/02-complexity-and-interaction/
 - [ ] 「重要な例外系」が列挙されている
 - [ ] 主要要件が、仕様/設計/テストのどこで担保されるか追跡できる（任意）
 - [ ] 主要導線の受け入れ条件に ID が付与されている（任意）
-
-## 前後リンク
-
-- [目次]({{ '/chapters/' | relative_url }})
-- [前章: 00. この本の使い方]({{ '/chapters/00-about-this-book/' | relative_url }})
-- [次章: 02. 複雑性の捉え方]({{ '/chapters/02-complexity-and-interaction/' | relative_url }})

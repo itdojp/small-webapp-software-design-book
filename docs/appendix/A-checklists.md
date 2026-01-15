@@ -61,9 +61,3 @@ next: /appendix/B-templates/
   - [ ] 失敗時の期待（業務継続/停止、再送、手動復旧）が仕様として固定されている
   - [ ] バックアップ/復旧の前提が合意されている（復旧の責任者と手順の所在）
   - [ ] リリース/ロールバックの手順が明文化されている（属人化していない）
-
-## 前後リンク
-
-- [目次]({{ '/chapters/' | relative_url }})
-- [前: 07. 進化条件（ADRと境界の強化タイミング）]({{ '/chapters/07-evolution-and-adr/' | relative_url }})
-- [次: Appendix B（テンプレ集）]({{ '/appendix/B-templates/' | relative_url }})
