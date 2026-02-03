@@ -45,6 +45,48 @@
     --transition: all 0.2s ease;
 }
 
+/* Footer */
+.book-footer {
+    margin-top: 3rem;
+    padding: 1.5rem 0 2rem;
+    border-top: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+}
+
+.book-footer-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.book-footer-license {
+    flex: 1;
+    line-height: 1.5;
+}
+
+.book-footer-links {
+    display: flex;
+    gap: 0.75rem;
+    flex: 0 0 auto;
+}
+
+.book-footer a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.book-footer a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+    .book-footer-inner {
+        flex-direction: column;
+    }
+}
+
 /* Dark Theme */
 [data-theme="dark"] {
     --primary-color: #3b82f6;
@@ -169,9 +211,8 @@ a:hover {
 
 .header-title h1 {
     margin: 0;
-    font-size: 1.125rem; /* Reduced from 1.25rem to 1.125rem for better fit */
+    font-size: 1.25rem;
     font-weight: 600;
-    line-height: 1.2; /* Add line-height for better control */
 }
 
 /* Sidebar */
@@ -345,16 +386,7 @@ a:hover {
 }
 
 /* Buttons */
-.sidebar-toggle {
-    padding: 0.5rem;
-    background: transparent;
-    border: none;
-    color: var(--text-secondary);
-    cursor: pointer;
-    border-radius: 6px;
-    transition: var(--transition);
-}
-
+.sidebar-toggle,
 .theme-toggle {
     padding: 0.5rem;
     background: transparent;
@@ -460,14 +492,6 @@ a:hover {
     .header-center {
         display: none;
     }
-    
-    .header-title h1 {
-        font-size: 1rem; /* Even smaller on mobile */
-    }
-    
-    .book-header {
-        padding: 0 0.75rem; /* Reduce padding on mobile */
-    }
 }
 
 /* Page Content Layout Improvements */
@@ -509,4 +533,32 @@ a:hover {
         box-shadow: none;
         padding: 0;
     }
+}
+
+/* Sidebar footer */
+.sidebar-footer {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.external-links {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.external-link {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+}
+
+.external-link:hover {
+    color: var(--text-primary);
+    text-decoration: underline;
+}
+:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
 }

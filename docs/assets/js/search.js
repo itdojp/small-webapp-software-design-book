@@ -1,158 +1,284 @@
 /**
- * Search Functionality (lightweight)
- * - Builds an index from sidebar links and current page headings
- * - Provides simple substring search with result highlighting
+ * Search functionality
  */
 
-(function () {
-  'use strict';
-
-  function escapeHtml(text) {
-    return String(text)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#39;');
-  }
-
-  function normalize(text) {
-    return String(text).toLowerCase();
-  }
-
-  function highlight(text, query) {
-    if (!query) return escapeHtml(text);
-    const raw = String(text);
-    const lower = raw.toLowerCase();
-    const q = query.toLowerCase();
-
-    const idx = lower.indexOf(q);
-    if (idx === -1) return escapeHtml(raw);
-
-    const before = escapeHtml(raw.slice(0, idx));
-    const match = escapeHtml(raw.slice(idx, idx + q.length));
-    const after = escapeHtml(raw.slice(idx + q.length));
-    return `${before}<mark>${match}</mark>${after}`;
-  }
-
-  function buildIndex() {
-    const data = [];
-
-    // Sidebar links (primary index)
-    const navLinks = document.querySelectorAll('.toc-link');
-    navLinks.forEach((a) => {
-      const title = (a.textContent || '').trim();
-      const url = a.getAttribute('href');
-      if (!title || !url) return;
-      data.push({
-        title,
-        url,
-        content: title,
-        type: 'nav'
-      });
-    });
-
-    // Current page headings (secondary index)
-    const headings = document.querySelectorAll('.page-content h1, .page-content h2, .page-content h3');
-    headings.forEach((h) => {
-      const title = (h.textContent || '').trim();
-      if (!title) return;
-      const id = h.id ? `#${h.id}` : '';
-      data.push({
-        title,
-        url: `${window.location.pathname}${id}`,
-        content: title,
-        type: 'heading'
-      });
-    });
-
-    return data;
-  }
-
-  function createResultItem(item, query) {
-    const titleHtml = highlight(item.title, query);
-    const typeLabel = document.documentElement.lang === 'ja'
-      ? (item.type === 'heading' ? '見出し' : '目次')
-      : (item.type === 'heading' ? 'Heading' : 'TOC');
-
-    return `
-<a class="search-result-item" href="${escapeHtml(item.url)}">
-  <div class="search-result-title">${titleHtml}</div>
-  <div class="search-result-type">${escapeHtml(typeLabel)}</div>
-</a>`;
-  }
-
-  function init() {
-    const input = document.getElementById('search-input');
-    const results = document.getElementById('search-results');
-
-    if (!input || !results) return;
-
-    const index = buildIndex();
-    const MAX_RESULTS = 10;
-    const MIN_LENGTH = 1;
-
-    function hide() {
-      results.classList.remove('active');
-      results.innerHTML = '';
+(function() {
+    'use strict';
+    
+    let searchInput;
+    let searchResults;
+    let searchIndex = [];
+    let searchTimeout;
+    
+    // Initialize elements
+    function initElements() {
+        searchInput = document.getElementById('search-input');
+        searchResults = document.getElementById('search-results');
     }
-
-    function show() {
-      results.classList.add('active');
+    
+    // Build search index from page content
+    function buildSearchIndex() {
+        // In a real implementation, this would be generated at build time
+        // For now, we'll create a simple index from current page
+        const content = document.querySelector('.page-content');
+        if (!content) return;
+        
+        // Get all headings and paragraphs
+        const elements = content.querySelectorAll('h1, h2, h3, h4, h5, h6, p');
+        
+        elements.forEach((el, index) => {
+            const text = el.textContent.trim();
+            if (text) {
+                searchIndex.push({
+                    id: `search-result-${index}`,
+                    title: el.tagName.startsWith('H') ? text : text.substring(0, 50) + '...',
+                    content: text,
+                    element: el,
+                    type: el.tagName.toLowerCase()
+                });
+            }
+        });
     }
-
-    function search(query) {
-      const q = query.trim();
-      if (q.length < MIN_LENGTH) {
-        hide();
-        return;
-      }
-
-      const nq = normalize(q);
-      const matched = [];
-
-      for (const item of index) {
-        const hay = normalize(item.title + ' ' + item.content);
-        if (hay.includes(nq)) matched.push(item);
-        if (matched.length >= MAX_RESULTS) break;
-      }
-
-      if (matched.length === 0) {
-        const msg = document.documentElement.lang === 'ja'
-          ? `「${escapeHtml(q)}」の検索結果はありません`
-          : `No results found for "${escapeHtml(q)}"`;
-        results.innerHTML = `<div class="search-no-results">${msg}</div>`;
-        show();
-        return;
-      }
-
-      results.innerHTML = matched.map((item) => createResultItem(item, q)).join('');
-      show();
+    
+    // Perform search
+    function performSearch(query) {
+        if (!query || query.length < 2) {
+            hideResults();
+            return;
+        }
+        
+        const results = searchIndex.filter(item => {
+            const searchText = `${item.title} ${item.content}`.toLowerCase();
+            return searchText.includes(query.toLowerCase());
+        });
+        
+        displayResults(results, query);
     }
-
-    input.addEventListener('input', (e) => {
-      search(e.target.value);
-    });
-
-    input.addEventListener('focus', () => {
-      if (input.value.trim()) search(input.value);
-    });
-
-    document.addEventListener('click', (e) => {
-      if (!e.target.closest('.search-container')) hide();
-    });
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        hide();
-        input.blur();
-      }
-    });
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
-  }
+    
+    // Display search results
+    function displayResults(results, query) {
+        if (!searchResults) return;
+        
+        if (results.length === 0) {
+            searchResults.innerHTML = `
+                <div class="search-no-results">
+                    <p>「${escapeHtml(query)}」に一致する結果が見つかりませんでした。</p>
+                </div>
+            `;
+        } else {
+            const resultsHtml = results.slice(0, 10).map(result => {
+                const highlightedTitle = highlightText(result.title, query);
+                const snippet = getSnippet(result.content, query);
+                const highlightedSnippet = highlightText(snippet, query);
+                
+                return `
+                    <div class="search-result-item" data-id="${result.id}">
+                        <div class="search-result-title">${highlightedTitle}</div>
+                        <div class="search-result-snippet">${highlightedSnippet}</div>
+                    </div>
+                `;
+            }).join('');
+            
+            searchResults.innerHTML = `
+                <div class="search-results-list">
+                    ${resultsHtml}
+                </div>
+                ${results.length > 10 ? `<div class="search-more">他 ${results.length - 10} 件の結果</div>` : ''}
+            `;
+        }
+        
+        showResults();
+    }
+    
+    // Get snippet around query
+    function getSnippet(text, query) {
+        const index = text.toLowerCase().indexOf(query.toLowerCase());
+        if (index === -1) return text.substring(0, 150) + '...';
+        
+        const start = Math.max(0, index - 50);
+        const end = Math.min(text.length, index + query.length + 100);
+        
+        let snippet = text.substring(start, end);
+        if (start > 0) snippet = '...' + snippet;
+        if (end < text.length) snippet = snippet + '...';
+        
+        return snippet;
+    }
+    
+    // Highlight search term in text
+    function highlightText(text, query) {
+        const regex = new RegExp(`(${escapeRegex(query)})`, 'gi');
+        return text.replace(regex, '<mark>$1</mark>');
+    }
+    
+    // Show search results
+    function showResults() {
+        if (searchResults) {
+            searchResults.classList.add('active');
+        }
+    }
+    
+    // Hide search results
+    function hideResults() {
+        if (searchResults) {
+            searchResults.classList.remove('active');
+        }
+    }
+    
+    // Handle search result click
+    function handleResultClick(e) {
+        const resultItem = e.target.closest('.search-result-item');
+        if (!resultItem) return;
+        
+        const id = resultItem.dataset.id;
+        const result = searchIndex.find(item => item.id === id);
+        
+        if (result && result.element) {
+            hideResults();
+            searchInput.value = '';
+            result.element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            
+            // Highlight the element temporarily
+            result.element.classList.add('search-highlight');
+            setTimeout(() => {
+                result.element.classList.remove('search-highlight');
+            }, 2000);
+        }
+    }
+    
+    // Escape HTML
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+    
+    // Escape regex
+    function escapeRegex(text) {
+        return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    }
+    
+    // Initialize search
+    function initSearch() {
+        initElements();
+        
+        if (!searchInput || !searchResults) return;
+        
+        // Build initial search index
+        buildSearchIndex();
+        
+        // Search input handler
+        searchInput.addEventListener('input', (e) => {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                performSearch(e.target.value.trim());
+            }, 300);
+        });
+        
+        // Focus/blur handlers
+        searchInput.addEventListener('focus', () => {
+            if (searchInput.value.trim()) {
+                showResults();
+            }
+        });
+        
+        // Click outside to close
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.search-container')) {
+                hideResults();
+            }
+        });
+        
+        // Handle result clicks
+        searchResults.addEventListener('click', handleResultClick);
+        
+        // Handle escape key
+        searchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                hideResults();
+                searchInput.blur();
+            }
+        });
+    }
+    
+    // Add styles
+    const styles = `
+        <style>
+        .search-results-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .search-result-item {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            border-bottom: 1px solid var(--border-color);
+            transition: var(--transition);
+        }
+        
+        .search-result-item:hover {
+            background: var(--bg-secondary);
+        }
+        
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+        
+        .search-result-title {
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+            color: var(--text-primary);
+        }
+        
+        .search-result-snippet {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        
+        .search-no-results {
+            padding: 2rem;
+            text-align: center;
+            color: var(--text-secondary);
+        }
+        
+        .search-more {
+            padding: 0.75rem 1rem;
+            text-align: center;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            border-top: 1px solid var(--border-color);
+        }
+        
+        mark {
+            background: rgba(255, 235, 59, 0.4);
+            color: inherit;
+            padding: 0.125rem 0;
+            border-radius: 2px;
+        }
+        
+        [data-theme="dark"] mark {
+            background: rgba(255, 235, 59, 0.2);
+        }
+        
+        .search-highlight {
+            animation: highlight 2s ease;
+        }
+        
+        @keyframes highlight {
+            0% { background: rgba(255, 235, 59, 0.4); }
+            100% { background: transparent; }
+        }
+        </style>
+    `;
+    
+    // Inject styles
+    document.head.insertAdjacentHTML('beforeend', styles);
+    
+    // Initialize when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initSearch);
+    } else {
+        initSearch();
+    }
 })();
