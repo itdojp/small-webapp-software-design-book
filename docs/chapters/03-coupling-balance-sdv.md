@@ -1,16 +1,16 @@
 ---
-title: "03. 結合の物差し（統合強度×距離×変動性）"
+title: "03. 結合の物差し（S/D/V: 統合強度・距離・変動性）"
 permalink: /chapters/03-coupling-balance-sdv/
 show_nav: true
 prev: /chapters/02-complexity-and-interaction/
 next: /chapters/04-minimal-architecture-ts/
 ---
 
-# 03. 結合の物差し（統合強度×距離×変動性）
+# 03. 結合の物差し（S/D/V: 統合強度・距離・変動性）
 
 ## 目的
 
-- 結合を「統合強度（S）×距離（D）×変動性（V）」で扱い、手当の優先順位を付ける
+- 結合を「統合強度（S）/距離（D）/変動性（V）」の3軸で扱い、手当の優先順位を付ける
 - 過剰設計（将来不確実性への先回り）を、観測可能な指標で抑制する
 
 ## 得られる判断能力

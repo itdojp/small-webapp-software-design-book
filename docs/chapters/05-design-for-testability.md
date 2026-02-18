@@ -21,7 +21,7 @@ next: /chapters/06-test-strategy-pyramid/
 
 ## 前提/用語
 
-- **観測性**: 期待する結果が、テストで確実に検証できる性質
+- **検証可能性（テスタビリティ）**: 期待する結果が、テストで確実に合否判定できる性質（運用の「Observability」とは区別する）
 - **CQS**: Command-Query Separation（状態変更と参照の分離）
 - **スタブ/モック**: 外部依存を代替し、制御可能にする手段
 
@@ -82,7 +82,11 @@ export type AssignTaskDeps = {
     assigneeId: string;
     assignedAt: Date;
   }) => Promise<void>;
-  notifyAssigned: (input: { taskId: string; assigneeId: string }) => Promise<void>;
+  enqueueAssignedNotification: (input: {
+    taskId: string;
+    assigneeId: string;
+    assignedAt: Date;
+  }) => Promise<void>;
 };
 
 export async function assignTask(
@@ -91,11 +95,12 @@ export async function assignTask(
 ): Promise<void> {
   const assignedAt = deps.now();
   await deps.saveAssignment({ ...input, assignedAt });
-  await deps.notifyAssigned(input);
+  // 送信そのものではなく、通知要求（outbox/queue等）の記録までを責務とする。
+  await deps.enqueueAssignedNotification({ ...input, assignedAt });
 }
 ```
 
-テストでは `now/saveAssignment/notifyAssigned` をテストダブルに差し替え、外部 I/O を含まずに「期待する振る舞い」を検証できます。統合テストでは `saveAssignment` を実 DB に向け、`notifyAssigned` は adapter の契約として別途検証します。
+テストでは `now/saveAssignment/enqueueAssignedNotification` をテストダブルに差し替え、外部 I/O を含まずに「期待する振る舞い」を検証できます。統合テストでは `saveAssignment` を実 DB に向け、通知要求の永続化（outbox等）を adapter の契約として検証します。
 
 ## 成果物駆動（仕様→テスト観点）
 
@@ -145,12 +150,14 @@ export type DueStatus = "ok" | "due_soon" | "overdue";
 export function calcDueStatus(now: Date, dueAt?: Date): DueStatus {
   if (!dueAt) return "ok";
   const diffMs = dueAt.getTime() - now.getTime();
-  const dayMs = 24 * 60 * 60 * 1000;
+  const dayMs = 24 * 60 * 60 * 1000; // 24時間（暦日基準ではない）
   if (diffMs < 0) return "overdue";
   if (diffMs <= 2 * dayMs) return "due_soon";
   return "ok";
 }
 ```
+
+補足: 「締切」や「日次バッチ」などが関わる場合、暦日（カレンダー日）での定義が必要になります。`24*60*60*1000` に依存する計算は、DST 等で意図とズレることがあるため、要件として定義してから実装してください。
 
 例: 単体テスト（Vitest）
 

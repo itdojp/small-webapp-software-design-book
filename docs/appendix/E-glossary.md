@@ -26,6 +26,8 @@ next: /appendix/C-references/
   - 関連: [Appendix B: テンプレ集]({{ '/appendix/B-templates/' | relative_url }})
 - **非機能（NFR）**: 性能、可用性、セキュリティ、運用性などの制約条件
   - 関連: [01. 要件定義を設計入力にする]({{ '/chapters/01-requirements-as-input/' | relative_url }})
+- **MoSCoW（優先度）**: Must/Should/Could/Won't によるスコープ優先度の合意手法（本書では Must/Should/Could を使用）
+  - 関連: [Appendix B: テンプレ集]({{ '/appendix/B-templates/' | relative_url }})
 - **価値導線**: ユーザー価値を成立させる主要な利用フロー（止まると損失が大きい導線）
   - 関連: [06. テスト戦略（単体/統合/E2E）]({{ '/chapters/06-test-strategy-pyramid/' | relative_url }})
 
@@ -67,7 +69,9 @@ next: /appendix/C-references/
   - 関連: [07. 進化条件（ADRと境界の強化タイミング）]({{ '/chapters/07-evolution-and-adr/' | relative_url }})
 - **Change Drivers**: 「なぜ今変えるか」を整理するドライバー（S/D/V、運用要件、組織等）
   - 関連: [Appendix B: テンプレ集]({{ '/appendix/B-templates/' | relative_url }})
-- **観測性**: 期待する結果が、テスト・ログ・メトリクス等で確実に検証できる性質
+- **検証可能性（Verifiability / Testability）**: 期待する結果が、テストで確実に合否判定できる性質（本書のテスト文脈）
   - 関連: [05. 設計時にテストを織り込む]({{ '/chapters/05-design-for-testability/' | relative_url }})
+- **観測性（Observability）**: 運用時にログ/メトリクス/トレース等から内部状態を推測し、原因追跡できる性質（一般的な運用文脈）
+  - 関連: [Appendix C: 参考文献・リンク]({{ '/appendix/C-references/' | relative_url }})
 - **相関ID（Correlation ID）**: 複数のログ/イベントを同一の処理として関連付ける識別子（障害解析・監査に用いる）
   - 関連: [07. 進化条件（ADRと境界の強化タイミング）]({{ '/chapters/07-evolution-and-adr/' | relative_url }})
