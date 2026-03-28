@@ -44,6 +44,12 @@ permalink: /
 - 共通題材（ランニング例）として「小規模タスク管理（期限/権限/通知）」を全章で用います
 - 本書で「何をどの粒度で守るか」を整理した後、AI を使ったテスト観点の具体化やレビュー手順まで広げたい場合は、関連教材 [ai-testing-strategy-book](https://github.com/itdojp/ai-testing-strategy-book) を併読すると接続しやすくなります
 
+## 最初の 1 クリック
+
+- 実装前に全体像と進め方を掴みたい場合は、[00. この本の使い方]({{ '/chapters/00-about-this-book/' | relative_url }}) から読み始めてください。
+- すぐに実務へ適用したい場合は、[Appendix A: チェックリスト]({{ '/appendix/A-checklists/' | relative_url }})、[Appendix B: テンプレ集]({{ '/appendix/B-templates/' | relative_url }})、[Appendix D: 記入例]({{ '/appendix/D-samples/' | relative_url }}) を先に参照すると使いどころが掴みやすくなります。
+- 用語で止まりやすい場合は、[Appendix E: 用語集]({{ '/appendix/E-glossary/' | relative_url }}) と [Appendix C: 参考文献・リンク]({{ '/appendix/C-references/' | relative_url }}) を手元に置いて読み進めてください。
+
 ## 学習成果
 
 - 要求を合意済みの要件・仕様に分解し、設計入力として扱える成果物（要件/仕様/意思決定ログ）を作成できるようになる。
@@ -64,6 +70,20 @@ permalink: /
 ## ライセンス
 
 本書は CC BY-NC-SA 4.0 で公開されています。商用利用は別途契約が必要です。
+
+[詳細なライセンス条件](https://github.com/itdojp/small-webapp-software-design-book/blob/main/LICENSE.md)
+
+## 利用と更新情報
+
+- 更新・フィードバック
+  - リポジトリ: [itdojp/small-webapp-software-design-book](https://github.com/itdojp/small-webapp-software-design-book)
+  - 更新差分を追う場合は、GitHub の [コミット履歴](https://github.com/itdojp/small-webapp-software-design-book/commits/main/) と [PR 一覧](https://github.com/itdojp/small-webapp-software-design-book/pulls) を参照してください。
+  - 誤記報告や改善提案は GitHub Issues / PR を利用してください。
+  - 併せて [README](https://github.com/itdojp/small-webapp-software-design-book/blob/main/README.md) と [CONTRIBUTING](https://github.com/itdojp/small-webapp-software-design-book/blob/main/CONTRIBUTING.md) を確認すると、ローカル確認手順と改善提案の出し方を把握できます。
+- 安全に使うための注意
+  - 本書の設計例は TypeScript を前提にした小〜中規模 Web アプリ向けの判断材料です。採用するフレームワーク、認証方式、外部サービスの仕様差分は実案件側で確認してください。
+  - 参照資料の扱い、転載禁止、機密情報や個人情報の混入防止は [POLICY.md](https://github.com/itdojp/small-webapp-software-design-book/blob/main/POLICY.md) の方針に従ってください。
+  - 要件やテスト観点の整理を別教材と接続したい場合は、[Issue駆動仕事術](https://itdojp.github.io/issue-driven-work-book/) と [AIテスト戦略入門](https://itdojp.github.io/ai-testing-strategy-book/) を併読すると流れを追いやすくなります。
 
 ## 目次
 
