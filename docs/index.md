@@ -70,7 +70,7 @@ permalink: /
 
 本書は CC BY-NC-SA 4.0 で公開されています。商用利用は別途契約が必要です。
 
-[詳細なライセンス条件](https://github.com/itdojp/it-engineer-knowledge-architecture/blob/main/LICENSE.md)
+[詳細なライセンス条件](https://github.com/itdojp/small-webapp-software-design-book/blob/main/LICENSE.md)
 
 ## 利用と更新情報
 
