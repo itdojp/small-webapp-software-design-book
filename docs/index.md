@@ -42,6 +42,7 @@ permalink: /
 - 実務で困っている箇所が明確なら、該当章だけ先に読んでも問題ありません
 - 実装前の最小タイムライン（例: 1〜2週間の初期立ち上げ）は [00. この本の使い方]({{ '/chapters/00-about-this-book/' | relative_url }}) を参照します
 - 共通題材（ランニング例）として「小規模タスク管理（期限/権限/通知）」を全章で用います
+- 本書で「何をどの粒度で守るか」を整理した後、AI を使ったテスト観点の具体化やレビュー手順まで広げたい場合は、関連教材 [AIテスト戦略入門](https://itdojp.github.io/ai-testing-strategy-book/) を併読すると接続しやすくなります
 
 ## 最初の 1 クリック
 
@@ -76,8 +77,8 @@ permalink: /
 
 - 更新・フィードバック
   - リポジトリ: [itdojp/small-webapp-software-design-book](https://github.com/itdojp/small-webapp-software-design-book)
-  - 更新差分を追う場合は、GitHub のコミット履歴と Pull Request を参照してください。
-  - 誤記報告や改善提案は GitHub Issues / Pull Request を利用してください。
+  - 更新差分を追う場合は、GitHub の [コミット履歴](https://github.com/itdojp/small-webapp-software-design-book/commits/main/) と [PR 一覧](https://github.com/itdojp/small-webapp-software-design-book/pulls?q=is%3Apr+sort%3Aupdated-desc) を参照してください。
+  - 誤記報告や改善提案は GitHub Issues / PR を利用してください。
   - 併せて [README](https://github.com/itdojp/small-webapp-software-design-book/blob/main/README.md) と [CONTRIBUTING](https://github.com/itdojp/small-webapp-software-design-book/blob/main/CONTRIBUTING.md) を確認すると、ローカル確認手順と改善提案の出し方を把握できます。
 - 安全に使うための注意
   - 本書の設計例は TypeScript を前提にした小〜中規模 Web アプリ向けの判断材料です。採用するフレームワーク、認証方式、外部サービスの仕様差分は実案件側で確認してください。
