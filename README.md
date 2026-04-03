@@ -4,7 +4,7 @@
 
 ## 公開（GitHub Pages）
 
-- URL: https://itdojp.github.io/small-webapp-software-design-book/
+- URL: [要件から始めるソフトウェア設計（小規模TS Webアプリの実践）](https://itdojp.github.io/small-webapp-software-design-book/)
 - 設定: Repo Settings → Pages → Deploy from a branch → `main` / `/docs`
 
 ## ローカルプレビュー（Jekyll）
@@ -24,7 +24,7 @@
 
 ## 読み方
 
-- GitHub Pages（公開後）: https://itdojp.github.io/small-webapp-software-design-book/
+- GitHub Pages（公開後）: [公開トップページ](https://itdojp.github.io/small-webapp-software-design-book/)
 - リポジトリ内: `docs/index.md` → `docs/chapters/TOC.md` → 各章 → `docs/appendix/`
 
 ## ディレクトリ構成（概要）
@@ -43,7 +43,7 @@
 ## ライセンス
 
 - `LICENSE.md` を参照してください（CC BY-NC-SA 4.0）
-- 商用利用等の相談は `knowledge@itdo.jp` まで連絡してください
+- 商用利用等の相談は [knowledge@itdo.jp](mailto:knowledge@itdo.jp) まで連絡してください
 
 ## 注意事項
 
