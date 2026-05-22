@@ -44,6 +44,21 @@ permalink: /
 - 共通題材（ランニング例）として「小規模タスク管理（期限/権限/通知）」を全章で用います
 - 本書で「何をどの粒度で守るか」を整理した後、AI を使ったテスト観点の具体化やレビュー手順まで広げたい場合は、関連教材 [AIテスト戦略入門](https://itdojp.github.io/ai-testing-strategy-book/) を併読すると接続しやすくなります
 
+## GitHub / AI / テスト / 形式手法を統合するレビューゲート
+
+小規模 Web アプリでは、設計判断を軽く保つほど「どこで品質を担保したか」が曖昧になりがちです。本書では、実装前後の PR で次の証跡を分けて残すことを推奨します。
+
+| 観点 | 何を確認するか | 残す証跡 | 関連教材 |
+| --- | --- | --- | --- |
+| 要件・仕様 | 要求、要件、仕様、非ゴールが分離されているか | Issue、受け入れ条件、仕様テンプレ（B-3） | [Issue駆動仕事術](https://itdojp.github.io/issue-driven-work-book/) |
+| 設計 | 境界、依存、S/D/V、ADR が説明できるか | 設計アウトライン、S/D/V、ADR | 本書 03/04/07 章 |
+| テスト / eval | 単体・統合・E2E の配分と観測点が仕様に対応しているか | テスト配分（B-8）、実行ログ、失敗時ログ | [AIテスト戦略入門](https://itdojp.github.io/ai-testing-strategy-book/) |
+| 形式手法 | 不変条件、状態遷移、認可ルールなどを仕様として固定すべき箇所があるか | 不変条件、反例、未検証範囲、採用しない理由 | [形式的手法の基礎と応用](https://itdojp.github.io/formal-methods-book/) |
+| GitHub / CI | PR レビュー、CI、公開反映で同じ証跡を確認できるか | PR body、Copilot review 対応、CI URL、Pages確認 | [GitHubワークフロー実践ガイド](https://itdojp.github.io/github-workflow-book/) |
+| セキュリティ / AI 利用 | 秘密情報、個人情報、ログ、外部サービス投入を分離できているか | マスク方針、投入禁止データ、レビュー観点 | [AI Agent Engineering](https://itdojp.github.io/ai-agent-engineering-book/) |
+
+AI を使って要件、テスト観点、レビュー観点を生成する場合も、AI 出力は「提案」として扱い、事実（仕様、ログ、CI結果）と仮説（改善案、原因候補）を分けて記録してください。
+
 ## 最初の 1 クリック
 
 - 実装前に全体像と進め方を掴みたい場合は、[00. この本の使い方]({{ '/chapters/00-about-this-book/' | relative_url }}) から読み始めてください。
