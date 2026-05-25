@@ -14,74 +14,88 @@
       {
         "id": "toc",
         "title": "目次",
-        "description": "本書の章構成と推奨読了順"
+        "description": "本書の章構成と推奨読了順",
+        "path": "/chapters/"
       },
       {
         "id": "chapter00",
         "title": "00. この本の使い方",
-        "description": "本書の適用範囲・非ゴール・判断原則を整理する"
+        "description": "本書の適用範囲・非ゴール・判断原則を整理する",
+        "path": "/chapters/00-about-this-book/"
       },
       {
         "id": "chapter01",
         "title": "01. 要件定義を設計入力にする",
-        "description": "要求を合意された要件へ変換し、設計入力として扱う"
+        "description": "要求を合意された要件へ変換し、設計入力として扱う",
+        "path": "/chapters/01-requirements-as-input/"
       },
       {
         "id": "chapter02",
         "title": "02. 複雑性の捉え方",
-        "description": "相互作用と複雑性の観点で設計の難所を言語化する"
+        "description": "相互作用と複雑性の観点で設計の難所を言語化する",
+        "path": "/chapters/02-complexity-and-interaction/"
       },
       {
         "id": "chapter03",
         "title": "03. 結合の物差し（統合強度×距離×変動性）",
-        "description": "結合（知識の共有）をS/D/Vで評価し、弱め方を選ぶ"
+        "description": "結合（知識の共有）をS/D/Vで評価し、弱め方を選ぶ",
+        "path": "/chapters/03-coupling-balance-sdv/"
       },
       {
         "id": "chapter04",
         "title": "04. 小規模TS向けの最小アーキテクチャ",
-        "description": "小規模前提で必要十分なアーキテクチャを設計する"
+        "description": "小規模前提で必要十分なアーキテクチャを設計する",
+        "path": "/chapters/04-minimal-architecture-ts/"
       },
       {
         "id": "chapter05",
         "title": "05. 設計時にテストを織り込む",
-        "description": "テスト容易性を設計判断として組み込む"
+        "description": "テスト容易性を設計判断として組み込む",
+        "path": "/chapters/05-design-for-testability/"
       },
       {
         "id": "chapter06",
         "title": "06. テスト戦略（単体/統合/E2E）",
-        "description": "変更容易性と価値導線を守るテスト配分を決める"
+        "description": "変更容易性と価値導線を守るテスト配分を決める",
+        "path": "/chapters/06-test-strategy-pyramid/"
       },
       {
         "id": "chapter07",
         "title": "07. 進化条件（ADRと境界の強化タイミング）",
-        "description": "進化条件を言語化し、設計を継続改善できる形にする"
+        "description": "進化条件を言語化し、設計を継続改善できる形にする",
+        "path": "/chapters/07-evolution-and-adr/"
       }
     ],
     "appendices": [
       {
         "id": "appendix-a",
         "title": "Appendix A: チェックリスト",
-        "description": "要求→要件→仕様→設計→テストを作業漏れなく進めるための最小チェックリスト"
+        "description": "要求→要件→仕様→設計→テストを作業漏れなく進めるための最小チェックリスト",
+        "path": "/appendix/A-checklists/"
       },
       {
         "id": "appendix-b",
         "title": "Appendix B: テンプレ集",
-        "description": "要求/要件/仕様/設計/テストの判断・合意を再利用可能な形式にするテンプレート集"
+        "description": "要求/要件/仕様/設計/テストの判断・合意を再利用可能な形式にするテンプレート集",
+        "path": "/appendix/B-templates/"
       },
       {
         "id": "appendix-d",
         "title": "Appendix D: 記入例（ランニング例の完成形）",
-        "description": "Appendix B のテンプレをランニング例に記入した完成形の例"
+        "description": "Appendix B のテンプレをランニング例に記入した完成形の例",
+        "path": "/appendix/D-samples/"
       },
       {
         "id": "appendix-e",
         "title": "Appendix E: 用語集",
-        "description": "本書で用いる用語（要求/要件/仕様/設計ほか）の最小定義"
+        "description": "本書で用いる用語（要求/要件/仕様/設計ほか）の最小定義",
+        "path": "/appendix/E-glossary/"
       },
       {
         "id": "appendix-c",
         "title": "Appendix C: 参考文献・リンク",
-        "description": "参照情報（一次情報/公式）へのリンク集（本文転載はしない）"
+        "description": "参照情報（一次情報/公式）へのリンク集（本文転載はしない）",
+        "path": "/appendix/C-references/"
       }
     ]
   },
@@ -108,5 +122,6 @@
   "shared": {
     "version": "3.2.2",
     "lastSync": "2026-02-04T23:01:36.022Z"
-  }
+  },
+  "homepage": "https://itdojp.github.io/small-webapp-software-design-book/"
 }

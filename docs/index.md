@@ -1,5 +1,8 @@
 ---
 title: "要件から始めるソフトウェア設計（小規模TS Webアプリの実践）"
+description: "小〜中規模の TypeScript Web アプリを対象に、要件定義→設計→テストまでを一貫して学ぶ実践教材"
+author: "株式会社アイティードゥ"
+version: "0.1.0"
 permalink: /
 ---
 

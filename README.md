@@ -17,10 +17,18 @@
 
 ## CI（品質ゲート）
 
-- `.github/workflows/ci.yml` で以下を実行します
-  - Jekyll build（`bundle exec jekyll build --source docs --config docs/_config.yml`）
-  - Markdown lint（markdownlint）
-  - リンクチェック（内部: `scripts/check_internal_links.py` / 外部: lychee）
+ローカルで最小確認を行う場合は、次を実行します。
+
+- `python3 scripts/check_book_config_navigation_consistency.py`
+- `python3 scripts/check_internal_links.py`
+- `bundle exec jekyll build --source docs --config docs/_config.yml --destination _site`
+
+`.github/workflows/ci.yml` では以下を実行します。
+
+- Jekyll build（`bundle exec jekyll build --source docs --config docs/_config.yml`）
+- Markdown lint（markdownlint）
+- メタデータ/ナビゲーション整合性チェック（`scripts/check_book_config_navigation_consistency.py`）
+- リンクチェック（内部: `scripts/check_internal_links.py` / 外部: lychee）
 
 ## 読み方
 
