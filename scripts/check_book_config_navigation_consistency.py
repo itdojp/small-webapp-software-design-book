@@ -34,8 +34,8 @@ class Page:
 
 
 SECTION_RE = re.compile(r"^(chapters|appendices):\s*$")
-TITLE_RE = re.compile(r"^\s*-\s*title:\s*(?P<value>.+?)\s*$")
-PATH_RE = re.compile(r"^\s*path:\s*(?P<value>.+?)\s*$")
+TITLE_RE = re.compile(r"^\s*-\s*title:\s*(?P<value>.*?)\s*$")
+PATH_RE = re.compile(r"^\s*path:\s*(?P<value>.*?)\s*$")
 FRONT_MATTER_RE = re.compile(r"^---\r?\n(.*?)\r?\n---\r?\n", re.DOTALL)
 SCALAR_RE = re.compile(r"^(?P<key>[A-Za-z0-9_-]+):\s*(?P<value>.*?)\s*$")
 
@@ -106,6 +106,7 @@ def parse_navigation_yaml(text: str) -> dict[str, list[NavItem]]:
     data: dict[str, list[NavItem]] = {"chapters": [], "appendices": []}
     current_section: str | None = None
     pending_title: str | None = None
+    pending_title_line: int | None = None
 
     for lineno, line in enumerate(text.splitlines(), start=1):
         stripped = line.strip()
@@ -114,8 +115,14 @@ def parse_navigation_yaml(text: str) -> dict[str, list[NavItem]]:
 
         section_match = SECTION_RE.match(stripped)
         if section_match:
+            if pending_title is not None:
+                raise CheckError(
+                    f"navigation.yml:{pending_title_line}: "
+                    f"title without path before section {section_match.group(1)!r}"
+                )
             current_section = section_match.group(1)
             pending_title = None
+            pending_title_line = None
             continue
 
         if current_section is None:
@@ -123,7 +130,13 @@ def parse_navigation_yaml(text: str) -> dict[str, list[NavItem]]:
 
         title_match = TITLE_RE.match(line)
         if title_match:
-            pending_title = str(unquote_scalar(title_match.group("value")))
+            if pending_title is not None:
+                raise CheckError(f"navigation.yml:{pending_title_line}: title without path before line {lineno}")
+            title = str(unquote_scalar(title_match.group("value"))).strip()
+            if not title:
+                raise CheckError(f"navigation.yml:{lineno}: title must not be empty")
+            pending_title = title
+            pending_title_line = lineno
             continue
 
         path_match = PATH_RE.match(line)
@@ -140,10 +153,11 @@ def parse_navigation_yaml(text: str) -> dict[str, list[NavItem]]:
                 )
             )
             pending_title = None
+            pending_title_line = None
             continue
 
     if pending_title is not None:
-        raise CheckError("navigation.yml: title without path at end of file")
+        raise CheckError(f"navigation.yml:{pending_title_line}: title without path at end of file")
 
     return data
 

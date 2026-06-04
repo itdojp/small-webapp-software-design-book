@@ -1,0 +1,10 @@
+# Jekyll / Bundler local artifacts
+_site/
+.jekyll-cache/
+.sass-cache/
+Gemfile.lock
+.bundle/
+vendor/bundle/
+
+# OS/editor
+.DS_Store
