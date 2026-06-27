@@ -137,7 +137,7 @@ export async function assignTask(
   - メール送信（外部I/F、失敗/遅延）
   - 認可（ロール、所有者）
 
-### CQS を小規模TSで扱う
+### CQS を小規模 TS で扱う
 
 - Query: 現在の状態を返す（副作用なし）
 - Command: 状態を変える（副作用は境界に集約）

@@ -43,7 +43,7 @@
       },
       {
         "id": "chapter04",
-        "title": "04. 小規模TS向けの最小アーキテクチャ",
+        "title": "04. 小規模 TS 向けの最小アーキテクチャ",
         "description": "小規模前提で必要十分なアーキテクチャを設計する",
         "path": "/chapters/04-minimal-architecture-ts/"
       },

@@ -1,12 +1,12 @@
 ---
-title: "04. 小規模TS向けの最小アーキテクチャ"
+title: "04. 小規模 TS 向けの最小アーキテクチャ"
 permalink: /chapters/04-minimal-architecture-ts/
 show_nav: true
 prev: /chapters/03-coupling-balance-sdv/
 next: /chapters/05-design-for-testability/
 ---
 
-# 04. 小規模TS向けの最小アーキテクチャ
+# 04. 小規模 TS 向けの最小アーキテクチャ
 
 ## 目的
 

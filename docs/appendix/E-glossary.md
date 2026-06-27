@@ -18,11 +18,11 @@ next: /appendix/C-references/
   - 関連: [01. 要件定義を設計入力にする]({{ '/chapters/01-requirements-as-input/' | relative_url }})
 - **仕様（Specification / Behavior）**: どう振る舞うか（外部から観測できる振る舞いを曖昧さなく）。入力/出力、状態遷移、エラー形式などを定義する
   - 関連: [Appendix B: テンプレ集]({{ '/appendix/B-templates/' | relative_url }})
-- **設計（Design / Structure）**: どう作るか（内部構造・モジュール・アルゴリズム・DB物理など）。仕様を満たすための構造を決める
-  - 関連: [04. 小規模TS向けの最小アーキテクチャ]({{ '/chapters/04-minimal-architecture-ts/' | relative_url }})
+- **設計（Design / Structure）**: どう作るか（内部構造・モジュール・アルゴリズム・DB 物理など）。仕様を満たすための構造を決める
+  - 関連: [04. 小規模 TS 向けの最小アーキテクチャ]({{ '/chapters/04-minimal-architecture-ts/' | relative_url }})
 - **受け入れ条件**: 検証可能な合否基準（Given/When/Then など）
   - 関連: [Appendix B: テンプレ集]({{ '/appendix/B-templates/' | relative_url }})
-- **観測点**: 合否判定のために「何を見ればよいか」を固定したポイント（画面表示、APIレスポンス、ログ、イベント等）
+- **観測点**: 合否判定のために「何を見ればよいか」を固定したポイント（画面表示、API レスポンス、ログ、イベント等）
   - 関連: [Appendix B: テンプレ集]({{ '/appendix/B-templates/' | relative_url }})
 - **非機能（NFR）**: 性能、可用性、セキュリティ、運用性などの制約条件
   - 関連: [01. 要件定義を設計入力にする]({{ '/chapters/01-requirements-as-input/' | relative_url }})
@@ -36,7 +36,7 @@ next: /appendix/C-references/
 - **相互作用**: ある変更が別の箇所に波及する関係（暗黙依存を含む）
   - 関連: [02. 複雑性の捉え方]({{ '/chapters/02-complexity-and-interaction/' | relative_url }})
 - **境界**: 依存方向を固定し、相互作用を制御する線引き（責務分離点）
-  - 関連: [04. 小規模TS向けの最小アーキテクチャ]({{ '/chapters/04-minimal-architecture-ts/' | relative_url }})
+  - 関連: [04. 小規模 TS 向けの最小アーキテクチャ]({{ '/chapters/04-minimal-architecture-ts/' | relative_url }})
 - **契約**: 境界を跨ぐ入出力・失敗時の扱い・互換性などの合意（文書/型/テストで固定する）
   - 関連: [05. 設計時にテストを織り込む]({{ '/chapters/05-design-for-testability/' | relative_url }})
 - **冪等性（Idempotency）**: 同じ操作を繰り返しても、結果が重複しない性質（例: 二重送信でデータや通知が増殖しない）
@@ -44,9 +44,9 @@ next: /appendix/C-references/
 - **S/D/V**: 結合を扱うための物差し（統合強度 / 距離 / 変動性）
   - 関連: [03. 結合の物差し（S/D/V）]({{ '/chapters/03-coupling-balance-sdv/' | relative_url }})
 - **Functional core / Thin shell**: 副作用のないコアと、I/O を担うシェルの分離方針
-  - 関連: [04. 小規模TS向けの最小アーキテクチャ]({{ '/chapters/04-minimal-architecture-ts/' | relative_url }})
+  - 関連: [04. 小規模 TS 向けの最小アーキテクチャ]({{ '/chapters/04-minimal-architecture-ts/' | relative_url }})
 - **adapter**: DB/HTTP/外部I/F などの I/O を担う実装（境界の外側）
-  - 関連: [04. 小規模TS向けの最小アーキテクチャ]({{ '/chapters/04-minimal-architecture-ts/' | relative_url }})
+  - 関連: [04. 小規模 TS 向けの最小アーキテクチャ]({{ '/chapters/04-minimal-architecture-ts/' | relative_url }})
 - **port**: adapter を抽象化した「依存先インターフェース」（ユースケース側が引数で受ける）
   - 関連: [05. 設計時にテストを織り込む]({{ '/chapters/05-design-for-testability/' | relative_url }})
 
