@@ -111,10 +111,10 @@
     "modules": {
       "quickStart": false,
       "readingGuide": true,
-      "checklistPack": false,
+      "checklistPack": true,
       "troubleshootingFlow": false,
-      "conceptMap": true,
-      "figureIndex": true,
+      "conceptMap": false,
+      "figureIndex": false,
       "legalNotice": false,
       "glossary": true
     }
