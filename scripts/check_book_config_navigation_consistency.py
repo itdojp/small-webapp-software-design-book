@@ -358,11 +358,9 @@ def validate_pages_and_assets(all_items: list[NavItem]) -> list[str]:
 def validate_concept_map_module(book: dict[str, Any], all_items: list[NavItem]) -> list[str]:
     errors: list[str] = []
     ux = book.get("ux")
-    if not isinstance(ux, dict):
-        return errors
-    modules = ux.get("modules")
+    modules = ux.get("modules") if isinstance(ux, dict) else {}
     if not isinstance(modules, dict):
-        return errors
+        modules = {}
     configured_paths = {item.path for item in all_items}
     public_page_paths = {page.permalink for page in collect_pages()}
     enabled = modules.get("conceptMap") is True

@@ -18,6 +18,9 @@ MD_LINK_RE = re.compile(r"\[[^\]]*?\]\((.*?)\)")
 LIQUID_RELATIVE_URL_RE = re.compile(
     r"""\{\{\s*['"](?P<path>/[^'"]*)['"]\s*\|\s*relative_url\s*\}\}"""
 )
+LIQUID_BASEURL_RE = re.compile(
+    r"""\{\{\s*site\.baseurl\s*\}\}(?P<path>/[^\s)]*)"""
+)
 
 
 def parse_front_matter(text: str) -> dict[str, Any]:
@@ -80,6 +83,8 @@ def extract_internal_links(markdown: str) -> set[str]:
         raw_url = match.group(1).strip()
         if raw_url.startswith("{{"):
             liquid = LIQUID_RELATIVE_URL_RE.search(raw_url)
+            if liquid is None:
+                liquid = LIQUID_BASEURL_RE.search(raw_url)
             if liquid:
                 links.add(normalize_internal_path(liquid.group("path")))
             continue
@@ -87,6 +92,8 @@ def extract_internal_links(markdown: str) -> set[str]:
             links.add(normalize_internal_path(raw_url))
 
     for liquid in LIQUID_RELATIVE_URL_RE.finditer(markdown):
+        links.add(normalize_internal_path(liquid.group("path")))
+    for liquid in LIQUID_BASEURL_RE.finditer(markdown):
         links.add(normalize_internal_path(liquid.group("path")))
 
     return links
