@@ -27,5 +27,7 @@ appendices:
     path: /appendix/D-samples/
   - title: "Appendix E: 用語集"
     path: /appendix/E-glossary/
+  - title: "Appendix F: 全体概念依存マップ"
+    path: /appendix/F-concept-map/
   - title: "Appendix C: 参考文献・リンク"
     path: /appendix/C-references/

@@ -92,6 +92,12 @@
         "path": "/appendix/E-glossary/"
       },
       {
+        "id": "appendix-f",
+        "title": "Appendix F: 全体概念依存マップ",
+        "description": "要求から進化条件・ADRまでの概念依存と章間の読み進め方を俯瞰する",
+        "path": "/appendix/F-concept-map/"
+      },
+      {
         "id": "appendix-c",
         "title": "Appendix C: 参考文献・リンク",
         "description": "参照情報（一次情報/公式）へのリンク集（本文転載はしない）",
@@ -113,7 +119,7 @@
       "readingGuide": true,
       "checklistPack": true,
       "troubleshootingFlow": false,
-      "conceptMap": false,
+      "conceptMap": true,
       "figureIndex": false,
       "legalNotice": false,
       "glossary": true

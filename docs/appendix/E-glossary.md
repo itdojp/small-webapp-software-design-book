@@ -3,7 +3,7 @@ title: "Appendix E: 用語集"
 permalink: /appendix/E-glossary/
 show_nav: true
 prev: /appendix/D-samples/
-next: /appendix/C-references/
+next: /appendix/F-concept-map/
 ---
 
 # Appendix E: 用語集
