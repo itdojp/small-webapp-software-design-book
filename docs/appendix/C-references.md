@@ -2,7 +2,7 @@
 title: "Appendix C: 参考文献・リンク"
 permalink: /appendix/C-references/
 show_nav: true
-prev: /appendix/E-glossary/
+prev: /appendix/F-concept-map/
 next: /chapters/
 ---
 

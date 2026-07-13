@@ -48,6 +48,8 @@ next: /chapters/03-coupling-balance-sdv/
 - 相互作用マップ（任意）: [Appendix B: テンプレ集（B-9）]({{ '/appendix/B-templates/' | relative_url }})
 - 記入例: [Appendix D: 記入例（D-17）]({{ '/appendix/D-samples/' | relative_url }})
 
+ここで作る相互作用マップは、1 つの変更シナリオの波及先を調べる局所的な成果物です。書籍全体の概念・章間依存を確認する場合は、[Appendix F: 全体概念依存マップ]({{ '/appendix/F-concept-map/' | relative_url }}) を参照してください。
+
 ## 例（ランニング例）
 
 タスク管理で相互作用が出やすい典型例です。

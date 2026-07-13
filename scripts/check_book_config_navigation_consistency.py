@@ -11,6 +11,7 @@ from urllib.parse import unquote
 
 REPOSITORY = "itdojp/small-webapp-software-design-book"
 CANONICAL_HOMEPAGE = "https://itdojp.github.io/small-webapp-software-design-book/"
+CONCEPT_MAP_ROUTE = "/appendix/F-concept-map/"
 REQUIRED_ASSETS = [
     "assets/css/main.css",
     "assets/css/syntax-highlighting.css",
@@ -354,6 +355,38 @@ def validate_pages_and_assets(all_items: list[NavItem]) -> list[str]:
     return errors
 
 
+def validate_concept_map_module(book: dict[str, Any], all_items: list[NavItem]) -> list[str]:
+    errors: list[str] = []
+    ux = book.get("ux")
+    if not isinstance(ux, dict):
+        return errors
+    modules = ux.get("modules")
+    if not isinstance(modules, dict):
+        return errors
+    configured_paths = {item.path for item in all_items}
+    public_page_paths = {page.permalink for page in collect_pages()}
+    enabled = modules.get("conceptMap") is True
+    route_configured = CONCEPT_MAP_ROUTE in configured_paths
+    public_page_exists = CONCEPT_MAP_ROUTE in public_page_paths
+
+    if enabled and not route_configured:
+        errors.append(
+            "book-config.json: ux.modules.conceptMap=true requires configured route "
+            f"{CONCEPT_MAP_ROUTE}"
+        )
+    if enabled and not public_page_exists:
+        errors.append(
+            "book-config.json: ux.modules.conceptMap=true requires a public page with permalink "
+            f"{CONCEPT_MAP_ROUTE}"
+        )
+    if (route_configured or public_page_exists) and not enabled:
+        errors.append(
+            "book-config.json: configured concept map route/page requires "
+            "ux.modules.conceptMap=true"
+        )
+    return errors
+
+
 def main() -> int:
     try:
         book = load_json(Path("book-config.json"))
@@ -383,7 +416,9 @@ def main() -> int:
             label="appendices", book_items=book_appendices, nav_items=nav["appendices"]
         )
     )
-    errors.extend(validate_pages_and_assets([*book_chapters, *book_appendices]))
+    all_items = [*book_chapters, *book_appendices]
+    errors.extend(validate_pages_and_assets(all_items))
+    errors.extend(validate_concept_map_module(book, all_items))
 
     if errors:
         sys.stderr.write("book metadata/navigation consistency check failed:\n")
