@@ -7,6 +7,10 @@ Gemfile.lock
 vendor/bundle/
 __pycache__/
 *.pyc
+.codex-local/
+
+# Node.js example fixture artifacts
+examples/typescript/node_modules/
 
 # OS/editor
 .DS_Store

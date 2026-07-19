@@ -15,6 +15,16 @@
 - `bundle exec jekyll serve --source docs --config docs/_config.yml --baseurl ""`
 - ブラウザで `http://127.0.0.1:4000/` を開く
 
+## TypeScript本文例の検証
+
+第4・5章で「実行可能例」と表示するコードは、`examples/typescript/`のfixtureと同期し、CIで型検査・Vitestを実行します。固定環境はNode.js 24.18.0、TypeScript 7.0.2、Vitest 4.1.10です。
+
+- `python3 scripts/check_typescript_examples.py && python3 scripts/check_typescript_examples.py --self-test`
+- `npm ci --prefix examples/typescript --ignore-scripts`
+- `npm run typecheck --prefix examples/typescript`
+- `npm test --prefix examples/typescript`
+- 詳細: [`examples/typescript/README.md`](examples/typescript/README.md)
+
 ## CI（品質ゲート）
 
 ローカルで最小確認を行う場合は、次を実行します。
@@ -22,14 +32,16 @@
 - `python3 scripts/check_book_config_navigation_consistency.py`
 - `python3 scripts/check_internal_links.py`
 - `python3 scripts/check_auth_session_contract.py && python3 scripts/check_auth_session_contract.py --self-test`
+- `python3 scripts/check_typescript_examples.py && python3 scripts/check_typescript_examples.py --self-test`
 - `bundle exec jekyll build --source docs --config docs/_config.yml --destination _site`
 
-`.github/workflows/ci.yml` では以下を実行します。
+CIでは以下を実行します。
 
 - Jekyll build（`bundle exec jekyll build --source docs --config docs/_config.yml`）
 - Markdown lint（markdownlint）
 - メタデータ/ナビゲーション整合性チェック（`scripts/check_book_config_navigation_consistency.py`）
 - 認証・セッション文書の必須marker・整合行と負例の回帰チェック（`scripts/check_auth_session_contract.py`）
+- TypeScript本文例の分類・fixture同期・型検査・Vitest（独立workflow: `.github/workflows/typescript-examples.yml`）
 - リンクチェック（内部: `scripts/check_internal_links.py` / 外部: lychee）
 
 ## 読み方
