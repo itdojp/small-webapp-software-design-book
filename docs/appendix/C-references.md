@@ -47,7 +47,16 @@ next: /chapters/
 
 ## セキュリティ（公式）
 
-- OWASP ASVS: https://owasp.org/www-project-application-security-verification-standard/
+- OWASP ASVS 5.0.0: https://owasp.org/www-project-application-security-verification-standard/
+- OWASP Session Management Cheat Sheet: https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html
+- OWASP Cross-Site Request Forgery Prevention Cheat Sheet: https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html
+- OWASP REST Security Cheat Sheet: https://cheatsheetseries.owasp.org/cheatsheets/REST_Security_Cheat_Sheet.html
+- RFC 9110（HTTP Semantics。`401` / `403`）: https://www.rfc-editor.org/rfc/rfc9110.html
+- IANA HTTP Authentication Scheme Registry: https://www.iana.org/assignments/http-authschemes/http-authschemes.xhtml
+- RFC 6750（OAuth 2.0 Bearer Token Usage）: https://www.rfc-editor.org/rfc/rfc6750.html
+- RFC 9700（Best Current Practice for OAuth 2.0 Security）: https://www.rfc-editor.org/rfc/rfc9700.html
+
+確認日: 2026-07-20。規格やブラウザの挙動は変わり得るため、採用時に最新版と対象環境を再確認してください。
 
 ## 観測性/運用（公式）
 

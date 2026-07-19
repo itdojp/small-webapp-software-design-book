@@ -33,6 +33,14 @@ next: /appendix/F-concept-map/
 
 ## E-2. 設計/境界
 
+- **認証（Authentication / AuthN）**: リクエストを行う主体が誰かを確認すること。認証情報が無い、無効、期限切れ、失効済みの場合は本書では `unauthorized/401` とする
+  - 関連: [Appendix B（B-17）]({{ '/appendix/B-templates/' | relative_url }})
+- **認可（Authorization / AuthZ）**: 認証済みの主体が対象へ操作を実行できるかを判定すること。権限不足は本書では `forbidden/403` とする
+  - 関連: [Appendix B（B-13）]({{ '/appendix/B-templates/' | relative_url }})
+- **セッション（Session）**: 複数のリクエストにまたがって認証状態を関連付けるサーバ側/クライアント側の状態と識別子。本書では生存期間、rotation、logout、失効を契約に含める
+  - 関連: [Appendix B（B-17）]({{ '/appendix/B-templates/' | relative_url }})
+- **CSRF（Cross-Site Request Forgery）**: browserが認証cookieを自動送信する性質を悪用し、利用者の意図しない状態変更を行わせる攻撃。`SameSite` だけを完全な防御とせず、CSRF token と Origin/Referer 等の検証を組み合わせる
+  - 関連: [Appendix D（D-25）]({{ '/appendix/D-samples/' | relative_url }})
 - **相互作用**: ある変更が別の箇所に波及する関係（暗黙依存を含む）
   - 関連: [02. 複雑性の捉え方]({{ '/chapters/02-complexity-and-interaction/' | relative_url }})
 - **境界**: 依存方向を固定し、相互作用を制御する線引き（責務分離点）
