@@ -13,6 +13,7 @@ import argparse
 import re
 import sys
 from collections.abc import Mapping
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
 
@@ -143,7 +144,7 @@ EXACT_ONCE: dict[str, tuple[str, ...]] = {
         "| forbidden | 403 | 認証済みだが認可失敗 | No | B-13 |",
     ),
     "docs/appendix/D-samples.md": (
-        "| unauthorized | 認証が必要です | 認証/session | 401 | No | code/相関ID | session IDやcookie値を記録しない。D-25 |",
+        "| unauthorized | 認証が必要です | 認証/セッション | 401 | No | code/相関ID | session IDやcookie値を記録しない。D-25 |",
         "| unauthorized | 401 | sessionなし/無効/期限切れ/logout済み/失効済み | No | D-25 |",
         "| forbidden | 403 | 認証済みだが認可失敗（admin以外） | No | D-18 / D-21 |",
         "| csrf_rejected | 403 | CSRF tokenまたはrequest originが不正 | No | 認可失敗とcodeを分ける。D-25 |",
@@ -185,6 +186,7 @@ CONTRADICTION_FIXTURES: tuple[str, ...] = (
 )
 
 CHECKED_DATE_RE = re.compile(r"^確認日: (?P<date>\d{4}-\d{2}-\d{2})(?:。|$)", re.MULTILINE)
+JST = timezone(timedelta(hours=9))
 
 
 def load_files(root: Path) -> dict[str, str]:
@@ -243,6 +245,18 @@ def validate(files: Mapping[str, str]) -> list[str]:
             "docs/appendix/C-references.md: one ISO-8601 checked date is required "
             f"(found {len(checked_dates)})"
         )
+    else:
+        try:
+            checked_date = date.fromisoformat(checked_dates[0])
+        except ValueError:
+            errors.append("docs/appendix/C-references.md: checked date is not a real calendar date")
+        else:
+            today_jst = datetime.now(JST).date()
+            if checked_date > today_jst:
+                errors.append(
+                    "docs/appendix/C-references.md: checked date must not be in the future "
+                    f"for Asia/Tokyo (checked={checked_date}, today={today_jst})"
+                )
 
     for relative_path, text in files.items():
         for lineno, line in enumerate(text.splitlines(), start=1):
@@ -335,6 +349,21 @@ def run_self_test(files: dict[str, str]) -> list[str]:
     mutated = dict(files)
     mutated[references] = CHECKED_DATE_RE.sub("確認日: 20-07-2026", mutated[references])
     error = expect_rejected(mutated, "malformed checked date")
+    if error:
+        errors.append(error)
+    cases += 1
+
+    mutated = dict(files)
+    mutated[references] = CHECKED_DATE_RE.sub("確認日: 2026-99-99。", mutated[references])
+    error = expect_rejected(mutated, "impossible checked date")
+    if error:
+        errors.append(error)
+    cases += 1
+
+    future_date = datetime.now(JST).date() + timedelta(days=1)
+    mutated = dict(files)
+    mutated[references] = CHECKED_DATE_RE.sub(f"確認日: {future_date.isoformat()}。", mutated[references])
+    error = expect_rejected(mutated, "future checked date in Asia/Tokyo")
     if error:
         errors.append(error)
     cases += 1

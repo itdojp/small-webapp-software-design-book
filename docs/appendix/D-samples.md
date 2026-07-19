@@ -610,7 +610,7 @@ Appendix B のテンプレを、ランニング例（小規模タスク管理）
 
 | code | message（利用者向け） | 起点（境界） | HTTP | 再試行可否 | 監査/ログ | 備考 |
 | --- | --- | --- | --- | --- | --- | --- |
-| unauthorized | 認証が必要です | 認証/session | 401 | No | code/相関ID | session IDやcookie値を記録しない。D-25 |
+| unauthorized | 認証が必要です | 認証/セッション | 401 | No | code/相関ID | session IDやcookie値を記録しない。D-25 |
 | forbidden | 権限がありません | 認可 | 403 | No | actor/taskId/code/相関ID | 管理者以外の割り当ては拒否 |
 | not_found | 対象タスクが見つかりません | 参照 | 404 | No | actor/taskId/code/相関ID | 存在しないID参照 |
 | invalid | 入力が不正です | 入力検証 | 400 | No | actor/code/相関ID | 個人情報はログに出さない |
