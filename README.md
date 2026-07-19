@@ -17,7 +17,7 @@
 
 ## TypeScript本文例の検証
 
-第4・5章で「実行可能例」と表示するコードは、`examples/typescript/`のfixtureと同期し、CIで型検査・Vitestを実行します。固定環境はNode.js 24.18.0、TypeScript 7.0.2、Vitest 4.1.10です。
+第4・5章で「実行可能例」と表示するコードは、`examples/typescript/`のfixtureと同期し、CIで型検査・Vitestを実行します。固定環境はNode.js 24.18.0、npm 11.16.0、TypeScript 7.0.2、Vitest 4.1.10です。
 
 - `python3 scripts/check_typescript_examples.py && python3 scripts/check_typescript_examples.py --self-test`
 - `npm ci --prefix examples/typescript --ignore-scripts`
