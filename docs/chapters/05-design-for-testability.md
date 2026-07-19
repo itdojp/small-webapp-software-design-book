@@ -190,6 +190,22 @@ describe("calcDueStatus", () => {
       )
     ).toBe("overdue");
   });
+  it("期限まで2日は due_soon", () => {
+    expect(
+      calcDueStatus(
+        new Date("2026-01-01T00:00:00Z"),
+        new Date("2026-01-03T00:00:00Z")
+      )
+    ).toBe("due_soon");
+  });
+  it("期限まで2日より先は ok", () => {
+    expect(
+      calcDueStatus(
+        new Date("2026-01-01T00:00:00Z"),
+        new Date("2026-01-04T00:00:00Z")
+      )
+    ).toBe("ok");
+  });
 });
 ```
 
