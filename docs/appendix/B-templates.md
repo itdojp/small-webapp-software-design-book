@@ -24,7 +24,7 @@ next: /appendix/D-samples/
 | --- | --- | --- | --- |
 | 要求 | なぜやるか（目的・課題・KPI） | Needs/Goals の整理 | B-1 |
 | 要件 | 何を満たすべきか（Shall） | Requirements 一覧、スコープ、非機能の最小合意 | B-2 |
-| 仕様 | どう振る舞うか（外部観測） | 受け入れ条件、例外系、エラー、外部I/Fの振る舞い | B-3（任意: B-10, B-12, B-13, B-14, B-16） |
+| 仕様 | どう振る舞うか（外部観測） | 受け入れ条件、例外系、エラー、外部I/Fの振る舞い | B-3（任意: B-10, B-12, B-13, B-14, B-16, B-17） |
 | 設計 | どう作るか（内部構造） | S/D/V、設計アウトライン、Change Drivers、ADR | B-4〜B-7（任意: B-9/B-10, B-15） |
 | テスト | どこをどう守るか | テスト配分（単体/統合/E2E） | B-8 |
 | 横断 | 漏れ/矛盾を早期に見つける | 要件→仕様→設計→テストの対応 | B-11（任意） |
@@ -129,6 +129,7 @@ next: /appendix/D-samples/
 
 ## 例外系/失敗時の振る舞い（Behavior）
 
+- 認証失敗（未認証/無効/期限切れ/失効済み）:
 - 認可失敗:
 - 存在しない/不正入力:
 - 競合（同時更新）:
@@ -365,6 +366,7 @@ next: /appendix/D-samples/
 
 | code | message（利用者向け） | 起点（境界） | HTTP | 再試行可否 | 監査/ログ | 備考 |
 | --- | --- | --- | --- | --- | --- | --- |
+| unauthorized | 認証が必要です | 認証/セッション | 401 | No | code/相関IDを記録 | 秘密値を記録しない。B-17 |
 | forbidden | 権限がありません | 認可 | 403 | No | 失敗理由を記録 | |
 | not_found | 対象が見つかりません | 参照 | 404 | No | 対象IDを記録 | |
 | conflict | 競合が発生しました | 同時更新 | 409 | Yes/No | 相関IDを記録 | 楽観ロック等 |
@@ -418,11 +420,12 @@ next: /appendix/D-samples/
 
 ## B-13. 認可（Authorization）ルール表テンプレ（任意）
 
-目的: 認可ルール（役割/所有者/操作）を表形式で合意し、仕様・設計・テストの前提を揃える。B-3（仕様）と B-10（エラーcode）と B-8（テスト配分）に接続する。
+目的: 認証済みの主体に対する認可ルール（役割/所有者/操作）を表形式で合意し、仕様・設計・テストの前提を揃える。認証情報が無い・無効・期限切れ・失効済みの場合は B-17 の `unauthorized/401` を先に適用し、認可失敗の `forbidden/403` と混同しない。B-3（仕様）と B-10（エラーcode）と B-8（テスト配分）に接続する。
 
 運用方針（最小）:
 
 - UI の表示制御に依存しない（サーバ側で必ず強制する）
+- この表は認証済みの主体だけを対象にする。認証の成立条件とセッション生存期間は B-17 で決める
 - 「誰が」「何に」「何をできるか」を最小の語彙で固定し、例外（代理、管理者権限等）は備考に逃がさない
 - 監査/ログは、成功だけでなく失敗（`forbidden` 等）も追跡できる粒度にする（個人情報をログに出さない）
 
@@ -448,11 +451,12 @@ next: /appendix/D-samples/
 
 ## B-14. API 契約テンプレ（HTTP/エラー/冪等性）（任意）
 
-目的: HTTP API の入出力・エラー・冪等性を「契約」として固定し、UI/API/テスト（統合）の相互作用を減らす。B-10（エラーcode）/B-12（AC-ID）/B-13（認可）に接続する。
+目的: HTTP API の入出力・エラー・冪等性を「契約」として固定し、UI/API/テスト（統合）の相互作用を減らす。B-10（エラーcode）/B-12（AC-ID）/B-13（認可）/B-17（認証・セッション）に接続する。
 
 運用方針（最小）:
 
 - 「成功の形」と同じくらい「失敗の形（code/HTTP）」を固定する（曖昧なまま実装しない）
+- `401`を返す場合はRFC 9110に従い、対象resourceへ適用する`WWW-Authenticate` challengeを返す。Bearer等の登録済みschemeと、cookie session用の私的schemeを混同しない
 - 冪等性（二重送信）と同時更新（競合）の扱いを契約に含める（フレーク・運用負債の主要因）
 - 互換性を崩す変更（破壊的変更）は、移行計画とセットで扱う（ADR を残す）
 
@@ -468,7 +472,8 @@ next: /appendix/D-samples/
 
 - method/path: `POST /api/...`
 - operationId（任意）:
-- 認証/認可: (例) admin のみ（B-13参照）
+- 認証: (例) 必須。成立条件/期限/失効は B-17 参照
+- 認可: (例) admin のみ。ルールは B-13 参照
 
 ## Request
 
@@ -495,7 +500,8 @@ next: /appendix/D-samples/
 
 | code | HTTP | 条件（いつ起きるか） | 再試行可否 | 備考 |
 | --- | --- | --- | --- | --- |
-| forbidden | 403 | 認可失敗 | No | B-13 |
+| unauthorized | 401 | 認証情報なし/無効/期限切れ/失効済み | No | B-17。対象resourceに適用する`WWW-Authenticate` challengeも契約化 |
+| forbidden | 403 | 認証済みだが認可失敗 | No | B-13 |
 | not_found | 404 | 対象なし | No | |
 | invalid | 400 | 入力不正 | No | |
 | conflict | 409 | 競合/状態不整合 | Yes/No | 同時更新方針を固定 |
@@ -627,4 +633,88 @@ next: /appendix/D-samples/
 
 - 単体: 再試行可否の判定（失敗分類）を純粋関数で守る
 - 統合: 失敗時に「再送起点」が記録され、アラート条件を満たすと検知できる
+```
+
+## B-17. 認証・セッション契約テンプレ（任意）
+
+目的: Authentication（主体確認）と Authorization（操作可否）を分離し、認証情報の保存・送信・生存期間・無効化・CSRF対策を、実装前にテスト可能な契約へ落とす。認可ルールは B-13、APIのエラー形式は B-14、テスト配分は B-8に接続する。
+
+認証を持たないアプリでは省略できるが、認証を導入する場合はこの最小契約を必須成果物として扱う。
+
+運用方針（最小）:
+
+- 同一origin中心の小規模browser appでは、server-managed sessionと推測困難なopaque cookieを第一候補にする。same-siteでもcross-originとなる構成はCORS/credential/CSRF境界を別途評価し、bearer tokenは非browser client、別origin API等の要件がある場合に選ぶ
+- browserが直接扱うbearer tokenをURLやログへ載せず、可能なら永続的なWeb Storageへの保存を避ける。保存場所を決める前にXSS時の漏えい・再送（replay）リスクを評価する
+- cookie方式では`Secure` / `HttpOnly` / `SameSite`を明示する。`SameSite`だけをCSRFの完全な代替にせず、状態変更へCSRF tokenとOrigin/Referer等の検証を適用する
+- idle timeoutとabsolute timeoutを分け、期限判定、rotation、logout、失効をサーバ側で強制する。具体値はリスクとUXに応じて決め、普遍的な推奨値として扱わない
+- セッションID、bearer token、パスワード、CSRF tokenをログへ出さない
+
+```md
+# 認証・セッション契約: <対象>
+
+## 前提/非ゴール
+
+- 対象client: <same-origin browser / same-site cross-origin browser / native / server-to-server>
+- origin/site境界と、same-site cross-originを対象に含める場合の追加評価:
+- 保護する操作・情報:
+- 認証基盤/責任者:
+- 非ゴール（例: IdP固有の導入手順、OAuth/OIDC仕様の網羅）:
+
+## Authentication / Authorizationの境界
+
+- Authentication（AuthN）: 主体を確認する条件:
+- Authorization（AuthZ）: 認証済み主体へB-13の操作ルールを適用する:
+- `unauthorized/401`: 認証情報なし/無効/期限切れ/失効済み
+- `forbidden/403`: 認証済みだが操作権限がない
+- `WWW-Authenticate`（401 responseで対象resourceに適用するchallenge。私的schemeなら非相互運用性を明記）:
+
+## 方式選択
+
+| 候補 | client側の保存 | 送信方法 | 主要脅威 | 適用条件/不採用理由 |
+| --- | --- | --- | --- | --- |
+| server-managed session + opaque cookie | `HttpOnly` cookie（秘密のsession状態はserver側） | browserが対象origin/pathへ自動送信 | CSRF、session ID窃取/固定化 | same-origin browser appの第一候補。採用/不採用理由を記録 |
+| bearer token | <memory/OS secure storage等。browserの永続保存は要リスク評価> | TLS上の`Authorization: Bearer ...`。URLへ載せない | XSS等による漏えい、replay、誤audience | 非browser/別origin API等の必要性と短命化・失効方法を記録 |
+
+- 採用方式と理由:
+- browser/通信/IdP等の前提を再確認した日:
+
+## Cookie contract（cookie方式の場合）
+
+- name/domain/path（`__Host-` prefixを使う場合は`Secure`、`Path=/`、`Domain`なしを満たす）:
+- attributes: `Secure`; `HttpOnly`; `SameSite=<Strict/Lax/None>`（`None`は`Secure`必須）
+- 状態変更を`GET`で行わない:
+- CSRF token方式（synchronizer token / signed double-submit等）:
+- request origin検証（`Origin`、必要に応じて`Referer`/Fetch Metadata）:
+- 失敗時: 状態を変更せず、認証失敗の401と区別したcode/statusを返す:
+
+## Lifecycle / timeout / revocation
+
+- idle timeout（値、起算点、活動時の更新条件、判定clock）:
+- absolute timeout（値、起算点、idle更新で延長しないこと）:
+- rotation（login成功、権限変更、定期更新等の契機と旧IDの無効化）:
+- logout（現在session/all sessions、server-side invalidationまたはtoken revocation、client側credential破棄の順序）:
+- revocation（パスワード変更、権限変更、事故対応等のtriggerと伝播上限）:
+- bearerの場合: access token expiry/revocation境界、issuer/audience、refresh token rotation/reuse検知、clock skew:
+- cleanup（失効/期限切れrecordの保持・削除）:
+
+## ログ/監査
+
+- 記録するもの（actor ID、event、結果code、時刻、相関ID等）:
+- 記録しないもの（session ID/token/password/CSRF token）:
+- 異常検知と対応起点:
+
+## テスト割り当て
+
+| ID | ケース | 期待結果/観測点 | 推奨テスト |
+| --- | --- | --- | --- |
+| AUTHN-1 | 認証情報なし/無効 | `unauthorized/401`、状態変更なし | 統合 |
+| AUTHZ-1 | 認証済みだが権限不足 | `forbidden/403`、状態変更なし | 統合/単体 |
+| SESSION-1 | logout後に保護APIへアクセス | server-side invalidation済みで`401` | 統合/E2E |
+| SESSION-2 | idle/absolute timeout超過 | server clock判定で`401` | 統合 |
+| SESSION-3 | 明示的な失効後 | 伝播上限内に`401` | 統合 |
+| CSRF-1 | cookie方式でCSRF token/originが不正 | 状態変更なし、契約したcode/status | 統合 |
+
+- 主要login→操作→logout導線（E2E）:
+- 時刻注入/固定方法（timeout test）:
+- 負例でDB/監査ログに残らない・残るもの:
 ```

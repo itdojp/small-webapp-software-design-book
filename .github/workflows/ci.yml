@@ -55,6 +55,11 @@ jobs:
       - name: Internal links (permalink/nav)
         run: python3 scripts/check_internal_links.py
 
+      - name: Authentication/session documentation contract
+        run: |
+          python3 scripts/check_auth_session_contract.py
+          python3 scripts/check_auth_session_contract.py --self-test
+
       - name: External links (lychee)
         uses: lycheeverse/lychee-action@v1.10.0
         with:

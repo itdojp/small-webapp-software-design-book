@@ -49,6 +49,7 @@ Appendix B のテンプレを、ランニング例（小規模タスク管理）
 | B-14 | D-22 | API の入出力・エラー・冪等性を契約として固定する |
 | B-15 | D-23 | 整合性制約と同時更新の方針を合意する |
 | B-16 | D-24 | 外部I/Fの失敗時期待（継続/再送/検知）を仕様として固定する |
+| B-17 | D-25 | 認証・セッション方式、期限、無効化、CSRF、テストを一体で固定する |
 
 ## D-1. 要求（Needs / Goals）の記入例（B-1）
 
@@ -96,6 +97,7 @@ Appendix B のテンプレを、ランニング例（小規模タスク管理）
 
 - 含む:
   - タスクに担当者を割り当てできる
+  - 認証済みの利用者だけが保護機能へアクセスできる
   - 割り当て時に担当者へ通知できる
   - 割り当て操作の監査ができる
 - 含まない（非ゴール）:
@@ -113,12 +115,13 @@ Appendix B のテンプレを、ランニング例（小規模タスク管理）
 | R-5 | システムは通知が失敗しても割り当ての確定を妨げないこと | 業務継続 | Must | 失敗は検知可能であること |
 | R-6 | システムは通知失敗を運用で検知できること | 検知遅延の短縮 | Must | ログ/メトリクス/アラート |
 | R-7 | システムは存在しないタスクへの割り当てを失敗として扱うこと | 品質 | Must | エラー形式は仕様で定義 |
+| R-8 | システムは有効な認証sessionを持つ利用者だけに保護機能へのアクセスを許可し、logout/期限切れ/失効後は拒否すること | セキュリティ/監査 | Must | lifecycleはD-25 |
 
 ### 非機能（最小合意）
 
 - 性能: 割り当て操作は通常時 1 秒以内（例: p95）で完了する
 - 可用性: 平日 09:00-18:00 JST の割り当て API 成功率が 99.9% 以上（測定: 5xx/タイムアウト率をメトリクス集計）
-- セキュリティ/権限: 管理者/一般ユーザーを識別し、割り当ては管理者のみに制限する
+- セキュリティ/権限: 有効なsessionで利用者を識別し、割り当ては認証済み管理者のみに制限する。401/403はD-25の境界に従う
 - 監査/ログ: 割り当てイベント（actor/task/assignee/時刻/相関ID）を検索可能にし、保持期間（例: 180日）を合意する
 - 運用（アラート/リトライ/バックアップ）: 通知失敗が検知でき、再送方針（手動/自動）が明文化されている
 
@@ -133,7 +136,7 @@ Appendix B のテンプレを、ランニング例（小規模タスク管理）
 ### 参照（要求/要件）
 
 - 要求: D-1（割り当ての見落としを減らす）
-- 要件: R-1〜R-7
+- 要件: R-1〜R-8
 
 ### 外部I/F（観測できる面）
 
@@ -172,8 +175,10 @@ Appendix B のテンプレを、ランニング例（小規模タスク管理）
 
 ### 例外系/失敗時の振る舞い（Behavior）
 
+- 認証失敗:
+  - sessionなし/無効/期限切れ/logout済み/失効済みで保護 API を呼ぶと `unauthorized/401` を返し、状態を変更しない
 - 認可失敗:
-  - 管理者以外が割り当て API を呼ぶと `403`（または同等）を返す
+  - 認証済みの非管理者が割り当て API を呼ぶと `forbidden/403` を返す
 - 存在しない/不正入力:
   - `assigneeId` が不正な形式なら `400`（または同等）を返す
 - 状態/業務ルール違反:
@@ -605,6 +610,7 @@ Appendix B のテンプレを、ランニング例（小規模タスク管理）
 
 | code | message（利用者向け） | 起点（境界） | HTTP | 再試行可否 | 監査/ログ | 備考 |
 | --- | --- | --- | --- | --- | --- | --- |
+| unauthorized | 認証が必要です | 認証/セッション | 401 | No | code/相関ID | session IDやcookie値を記録しない。D-25 |
 | forbidden | 権限がありません | 認可 | 403 | No | actor/taskId/code/相関ID | 管理者以外の割り当ては拒否 |
 | not_found | 対象タスクが見つかりません | 参照 | 404 | No | actor/taskId/code/相関ID | 存在しないID参照 |
 | invalid | 入力が不正です | 入力検証 | 400 | No | actor/code/相関ID | 個人情報はログに出さない |
@@ -629,6 +635,7 @@ Appendix B のテンプレを、ランニング例（小規模タスク管理）
 | R-5 | 通知失敗でも割り当て確定は成立 | D-3「外部I/F失敗」 | D-5（分離方針）, D-7（意思決定） | D-8（統合） | 完了 | 再送は運用で扱う |
 | R-6 | 通知失敗を運用で検知できる | D-3「観測点: 監査/ログ」 | D-5（ログ/アラート前提） | D-8（統合） | 完了 | 相関ID があると解析が短い |
 | R-7 | 存在しないタスクは失敗 | D-3「例外系: Not Found」 | D-18（`not_found`） | D-8（統合） | 完了 | |
+| R-8 | 有効な認証sessionだけが保護機能へアクセスできる | D-3「例外系: 認証失敗」 | D-18（`unauthorized`）、D-25（lifecycle） | D-25（統合/E2E） | 完了 | logout/期限切れ/失効後も拒否 |
 
 ### ケース2（AC-ID）: 期限超過の表示 + 通知
 
@@ -650,6 +657,7 @@ Appendix B のテンプレを、ランニング例（小規模タスク管理）
 | AC-2 | R-2 | 一般ユーザーがログインしている | 割り当てを実行する | `forbidden` として失敗する | forbidden | 統合/単体 | 仕様は D-3、code は D-18 |
 | AC-3 | R-7 | 管理者がログインしている | 存在しないタスクに割り当てる | `not_found` として失敗する | not_found | 統合 | |
 | AC-4 | R-5, R-6 | 管理者がログインしている | 割り当て時に通知が失敗する | 割り当ては成立し、失敗が追跡できる | - | 統合 | 外部I/F到達性は分離する |
+| AC-8 | R-8 | sessionなし/無効/期限切れ/logout済み/失効済み | 保護APIへアクセスする | `unauthorized` として失敗し、状態は変わらない | unauthorized | 統合 | 401。詳細ケースはD-25 |
 
 ### 対象: ケース2（期限超過の表示 + 通知）
 
@@ -663,9 +671,10 @@ Appendix B のテンプレを、ランニング例（小規模タスク管理）
 
 前提（例）:
 
+- B-17 / D-25の契約により認証済みであること。この表は認証成立後の操作可否だけを扱う
 - 役割: `admin` / `user`
 - 属性: タスクには `assigneeId` があり、担当者は `assigneeId == actorId`
-- 失敗時の振る舞い: 認可失敗は `forbidden/403`（`not_found` と混同しない）
+- 失敗時の振る舞い: 認証情報なし/無効/期限切れ/失効済みは `unauthorized/401`、認証済みの認可失敗は `forbidden/403`（`not_found` と混同しない）
 
 | 操作ID | 操作（Action） | 対象（Resource） | 許可条件（Role/属性） | 失敗時（code/HTTP） | 監査/ログ | 推奨テスト | 備考 |
 | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -679,14 +688,16 @@ Appendix B のテンプレを、ランニング例（小規模タスク管理）
 
 ### 関連（要求/要件/受け入れ条件）
 
-- 要件ID: R-1, R-2, R-4, R-5, R-7
-- AC ID: AC-1, AC-2, AC-3, AC-4
+- 要件ID: R-1, R-2, R-4, R-5, R-7, R-8
+- AC ID: AC-1, AC-2, AC-3, AC-4, AC-8
+- 認証・セッション（参照）: D-25
 - 認可ルール（参照）: D-21（AUTHZ-1）
 
 ### エンドポイント
 
 - method/path: `POST /api/tasks/{taskId}/assignment`
-- 認証/認可: 認証必須、認可は `admin` のみ
+- 認証: D-25の有効なserver-managed sessionが必須
+- 認可: D-21のAUTHZ-1により`admin`のみ
 
 ### Request
 
@@ -713,7 +724,9 @@ Appendix B のテンプレを、ランニング例（小規模タスク管理）
 
 | code | HTTP | 条件（いつ起きるか） | 再試行可否 | 備考 |
 | --- | --- | --- | --- | --- |
-| forbidden | 403 | 認可失敗（admin 以外） | No | D-18 |
+| unauthorized | 401 | sessionなし/無効/期限切れ/logout済み/失効済み | No | D-25 |
+| forbidden | 403 | 認証済みだが認可失敗（admin以外） | No | D-18 / D-21 |
+| csrf_rejected | 403 | CSRF tokenまたはrequest originが不正 | No | 認可失敗とcodeを分ける。D-25 |
 | not_found | 404 | `taskId` が存在しない | No | D-18 |
 | invalid | 400 | `assigneeId` の形式不正等 | No | D-18 |
 | conflict | 409 | 同時更新/状態ルール違反 | Yes/No | D-18 |
@@ -838,3 +851,80 @@ Appendix B のテンプレを、ランニング例（小規模タスク管理）
 - 統合:
   - 通知 I/F が失敗しても割り当ては成功し、outbox に再送起点が残る
   - `dedupeKey` により二重送信が増殖しない（再実行/再試行に耐える）
+
+## D-25. 認証・セッション契約（記入例）（B-17）
+
+対象: 同一originで提供する小規模タスク管理Webアプリ
+
+以下のtimeout値は記入方法を示す例であり、すべてのシステムに適用できる推奨値ではありません。対象データ、利用場所、再認証コスト、運用時間を評価して決め直します。
+
+### 認証・セッションの前提/非ゴール
+
+- 対象client: same-originのbrowser app。管理画面とAPIは同じoriginで提供する。same-siteでもcross-originとなる構成は本例の対象外とし、別途CORS/credential/CSRF境界を評価する
+- 保護する操作・情報: タスクの閲覧/作成/割り当て/更新、管理操作
+- 認証状態とsession recordの管理責任: API serverとserver-side session store
+- 非ゴール: 特定IdP/frameworkの導入手順、OAuth/OIDCの網羅、native client対応
+
+### Authentication / Authorizationの境界
+
+- Authentication（AuthN）: `__Host-session`が指す有効なserver-side sessionからactorを確定する
+- Authorization（AuthZ）: AuthN成立後にD-21のrole/attribute ruleを適用する
+- sessionなし、形式不正またはsession storeに存在しないID、idle/absolute timeout超過、logout済み、失効済み: `unauthorized/401`
+- 認証済みだがD-21の操作条件を満たさない: `forbidden/403`
+- 401 responseは認証基盤が対象resourceへ適用する`WWW-Authenticate` challengeを返す。cookie session用の私的schemeを汎用例として固定せず、採用時は非相互運用性を含めて契約化する
+- HTMLへredirectする場合も、保護APIの外部契約と統合テストでは401と403を区別する
+
+### 方式選択
+
+| 候補 | client側の保存 | 送信方法 | 主要脅威 | 判断 |
+| --- | --- | --- | --- | --- |
+| server-managed session + opaque cookie | `HttpOnly` cookie。認証状態はserver-side session store | browserがsame-origin requestへ自動送信 | CSRF、session ID窃取/固定化 | 採用。same-origin中心で、browser scriptへcredentialを公開する必要がないため |
+| bearer token | browser memory等。永続保存は追加のXSS/漏えい評価が必要 | TLS上の`Authorization` header | XSS等による漏えい、replay、誤audience | 不採用。非browser client/別origin API要件が現時点でないため |
+
+- 前提再確認日: 2026-07-20。client/API構成、browser、認証基盤が変わる場合は再評価する
+
+### Cookie / CSRF contract
+
+- cookie: `__Host-session=<opaque-id>; Secure; HttpOnly; SameSite=Lax; Path=/`
+  - `Domain`は指定しない。HTTPSだけで送信し、値に利用者情報や権限を格納しない
+- `POST` / `PUT` / `PATCH` / `DELETE`だけが状態を変更し、`GET`では変更しない
+- 状態変更requestはsessionにひも付くsynchronizer CSRF tokenをheaderで要求する
+- API serverはCSRF tokenを照合し、`Origin`をexact allowlistで検証する。`Origin`が得られない互換経路を認める場合だけ`Referer`等の代替条件を別途固定する
+- `SameSite=Lax`は多層防御であり、CSRF token/origin検証の代替にしない
+- CSRF検証失敗は`csrf_rejected/403`とし、DB、outbox、業務監査ログを変更しない。security eventはtoken値を含めず記録する
+
+### Lifecycle / timeout / revocation
+
+- idle timeout: 最終の認証済みユーザー操作から30分（例）。API serverのUTC clockで判定し、明示的な前景操作だけで最終活動時刻を更新する。background polling、heartbeat、自動再読込はidle timeoutを延長しない
+- absolute timeout: login成功から8時間（例）。idle更新やsession rotationでも延長しない
+- rotation:
+  - login成功時に新しいsession IDを発行し、事前の匿名session IDを引き継がない
+  - role/権限変更時と再認証時に新IDへ更新し、旧IDを同一処理で無効化する
+- logout:
+  - 現在sessionのserver-side recordを先に無効化し、その後`__Host-session`を同じ属性で期限切れにする
+  - 「全端末からlogout」はactorの全sessionを無効化し、処理結果を監査する
+- revocation: パスワード変更、利用停止、role変更、漏えい疑いをtriggerとし、対象sessionを即時にserver-sideで無効化する
+- cleanup: 期限切れ/失効済みrecordは監査要件に沿う最小期間だけ識別子を不可逆化して保持し、定期削除する
+
+### ログ/監査
+
+- 記録: actor ID、session event種別（login/rotation/logout/revocation）、結果code、時刻、相関ID、管理操作の承認根拠
+- 記録禁止: session ID、cookie値、CSRF token、パスワード、bearer token
+- 検知: 失敗急増、失効後の再利用試行、同一actorの異常なsession増加を運用確認の起点にする
+
+### テスト割り当て
+
+| ID | ケース | 期待結果/観測点 | 配分 |
+| --- | --- | --- | --- |
+| AUTHN-1 | cookieなし/不正なsession IDで保護APIへアクセス | `unauthorized/401`、状態変更なし | 統合 |
+| AUTHZ-1 | 認証済み一般ユーザーが割り当てAPIへアクセス | `forbidden/403`、状態変更なし | 統合/単体 |
+| SESSION-1 | login→保護API成功→logout→同じcookieを再送 | logoutでserver-side invalidationされ、再送は`401` | 統合/E2E |
+| SESSION-2 | 最終活動時刻を固定してidle timeoutを1秒超過 | server clock判定で`401`、最終活動時刻を更新しない | 統合 |
+| SESSION-3 | login時刻を固定してabsolute timeoutを1秒超過 | idle更新の有無によらず`401` | 統合 |
+| SESSION-4 | password変更/利用停止でsessionを失効後に再送 | 失効済みrecordとして`401` | 統合 |
+| SESSION-5 | role変更時に旧session IDを再送 | rotation済みの旧IDは`401`、新IDへ新roleが反映 | 統合 |
+| CSRF-1 | tokenなし/不一致、または許可外`Origin`で状態変更 | `csrf_rejected/403`、task/outboxは未変更 | 統合 |
+
+- E2Eは「管理者がloginし、タスクを割り当て、logout後に保護画面へ戻れない」1導線に絞る
+- timeout統合テストはAPI serverへclockを注入し、実時間の`sleep`を使わない
+- 401/403/CSRFの負例はresponseだけでなく、DB/outboxの非変更と秘密値がログへ出ないことも確認する
