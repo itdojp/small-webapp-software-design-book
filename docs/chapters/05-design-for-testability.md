@@ -72,7 +72,10 @@ next: /chapters/06-test-strategy-pyramid/
 
 小規模 TS では、DI コンテナを導入する前に「依存を引数で受ける」だけで十分なことが多いです。
 
-例: ユースケースが port を引数で受ける（疑似コード）
+例: ユースケースが port を引数で受ける（実行可能な最小例）
+
+**分類: 実行可能例** — `examples/typescript/src/chapter-05/usecases/assignTask.ts` と同期し、CI で型検査します。
+<!-- code-example: executable path=examples/typescript/src/chapter-05/usecases/assignTask.ts -->
 
 ```ts
 export type AssignTaskDeps = {
@@ -148,6 +151,9 @@ export async function assignTask(
 
 例: domain の Query（純粋）
 
+**分類: 実行可能例** — `examples/typescript/src/chapter-05/domain/calcDueStatus.ts` と同期し、CI で型検査します。
+<!-- code-example: executable path=examples/typescript/src/chapter-05/domain/calcDueStatus.ts -->
+
 ```ts
 export type DueStatus = "ok" | "due_soon" | "overdue";
 
@@ -165,6 +171,9 @@ export function calcDueStatus(now: Date, dueAt?: Date): DueStatus {
 
 例: 単体テスト（Vitest）
 
+**分類: 実行可能例** — `examples/typescript/src/chapter-05/domain/calcDueStatus.test.ts` と同期し、CI で実行します。
+<!-- code-example: executable path=examples/typescript/src/chapter-05/domain/calcDueStatus.test.ts -->
+
 ```ts
 import { describe, it, expect } from "vitest";
 import { calcDueStatus } from "./calcDueStatus";
@@ -180,6 +189,22 @@ describe("calcDueStatus", () => {
         new Date("2026-01-01T00:00:00Z")
       )
     ).toBe("overdue");
+  });
+  it("期限まで2日は due_soon", () => {
+    expect(
+      calcDueStatus(
+        new Date("2026-01-01T00:00:00Z"),
+        new Date("2026-01-03T00:00:00Z")
+      )
+    ).toBe("due_soon");
+  });
+  it("期限まで2日より先は ok", () => {
+    expect(
+      calcDueStatus(
+        new Date("2026-01-01T00:00:00Z"),
+        new Date("2026-01-04T00:00:00Z")
+      )
+    ).toBe("ok");
   });
 });
 ```

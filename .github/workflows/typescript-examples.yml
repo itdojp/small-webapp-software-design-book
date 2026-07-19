@@ -1,0 +1,48 @@
+name: TypeScript Examples
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
+permissions:
+  contents: read
+
+jobs:
+  examples:
+    name: Typecheck, test, and sync examples
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+
+      - name: Validate documentation-fixture synchronization
+        run: |
+          python3 scripts/check_typescript_examples.py
+          python3 scripts/check_typescript_examples.py --self-test
+
+      - name: Setup pinned Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: examples/typescript/.node-version
+          cache: npm
+          cache-dependency-path: examples/typescript/package-lock.json
+
+      - name: Install locked dependencies
+        run: npm ci --prefix examples/typescript --ignore-scripts
+
+      - name: Typecheck chapter examples
+        run: npm run typecheck --prefix examples/typescript
+
+      - name: Run Vitest chapter examples
+        run: npm test --prefix examples/typescript
+
+      - name: Audit locked dependencies
+        run: npm audit --prefix examples/typescript --audit-level=moderate
