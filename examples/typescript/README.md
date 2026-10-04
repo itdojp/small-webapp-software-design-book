@@ -4,11 +4,11 @@
 
 ## 固定環境
 
-2026-07-20 JSTに次の公式情報とpackage metadataを確認し、patch versionを固定しています。
+Node.jsとTypeScriptの固定値は2026-07-20 JSTの確認記録に基づきます。Vitestは2026-10-04 JSTに[公式release](https://github.com/vitest-dev/vitest/releases/tag/v4.1.11)とpackage metadataを再確認し、patch versionを4.1.11へ更新しました。
 
 - Node.js 24.18.0 (LTS): <https://nodejs.org/en/blog/release/v24.18.0>
 - TypeScript 7.0.2: <https://www.npmjs.com/package/typescript/v/7.0.2>
-- Vitest 4.1.10: <https://www.npmjs.com/package/vitest/v/4.1.10>
+- Vitest 4.1.11: <https://www.npmjs.com/package/vitest/v/4.1.11>
 
 Node.js/npmのversion不一致は`.npmrc`の`engine-strict=true`で拒否します。依存ツリーは`package-lock.json`を正本とし、installにはlifecycle scriptを実行しない`npm ci --ignore-scripts`を使用します。
 
